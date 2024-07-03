@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between py-2">
         <div class="h2" id="title">title sementara ( handle pake js )</div>
         <div class="">
-            <button type="submit" class="btn btn-primary w-100"> tambahkan migration plan</button>
+            <a href="{{ route('add') }}" class="btn btn-primary w-100"> tambahkan migration plan</a>
         </div>
     </div>
         <div class="row">

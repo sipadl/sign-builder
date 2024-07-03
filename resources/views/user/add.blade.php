@@ -1,0 +1,256 @@
+@extends('./layouts/base') @section('main')
+<div class="">
+    <div class="h2 mt-2 mb-1">Form Migration Plan</div>
+    <div class="card">
+        <img src="" alt="logo mti">
+        <div class="d-flex justify-content-around">
+            <div class="h2">CHANGE IMPACT ANALYSIS</div>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row text-right">
+                        <label for="" class="col-form-label col-md-6 col-xs-12">
+                            Redmine No.
+                        </label>
+                        <div class="col-md-6 col-xs-12">
+                            <input
+                                type="text"
+                                name=""
+                                id=""
+                                class="form-control"
+                                placeholder="#1234"
+                                required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group row text-right">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">
+                            Title
+                        </label>
+                        <div class="col-md-10 col-xs-12">
+                            <input
+                                type="text"
+                                name=""
+                                id=""
+                                class="form-control"
+                                placeholder="For Testing Only"
+                                required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Changes Area</label>
+                        <div class="col-md-10 col-xs-12">
+                            <select name="changes_area" class="form-control" id="" multiple="multiple">
+                                @foreach($master_data_changes as $changes_area)
+                                <option value="{{ $changes_area->id }}">{{ $changes_area->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Define Scope</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Existing Flow :</label>
+                                <textarea
+                                    name="scope_existing"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Existing Flow :</label>
+                                <textarea
+                                    name="scope_changes"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Testing Requirement</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="testing_requirement"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">UAT ENV. Data Needs</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="uat_env_data"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Data Testing</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="data_testing"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Setup Parameter</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="setup_parameter"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Changes Of Existing Structure File</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="changes_of_exsiting_structure_file"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Changes Of Database</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="changes_of_database"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Recomended Action and Testing</label>
+                        <div class="col-md-10">
+                            <div class="card mt-1 mb-1">
+                                <label for="message" class="mx-2">Please Note :</label>
+                                <textarea
+                                    name="recomended_action"
+                                    class="form-control border-0"
+                                    id="message"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Downtime Required</label>
+                        <div class="col-md-10">
+                            <input type="radio" id="yes" name="down_time" value="Yes">
+                            <label for="yes" class="col-form-label">Yes</label>
+                            <input type="radio" name="down_time" id="no" value="No">
+                            <label for="no" class="col-form-label">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- Table Signature --}}
+            <div class="p-2">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="20%">Group/Departement</th>
+                            <th width="60%">Reviewer Notes</th>
+                            <th widht="20%">Signature</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>IT Infa & Operation - Application Infrastucre</td>
+                            <td>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="text-center">
+                                            <input type="radio" id="yes" name="infra_impact" value="Yes">
+                                            <label for="yes" class="col-form-label">Yes</label>
+                                            <input type="radio" name="infra_impact" id="no" value="No">
+                                            <label for="no" class="col-form-label">No</label>
+                                        </div>
+                                        <div class="card">
+                                            <label for="message" class="mx-2">Please Note :</label>
+                                            <textarea name="gh_infra_notes" id="" rows="5" class="form-control border-0"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="">
+                                    <div class="">
+                                        <!-- Button trigger modal -->
+                                        <div class="text-center">
+                                            <canvas id="signature-pad"></canvas>
+                                            <div class="d-flex justify-content-end">
+                                                <button type="button" class="btn btn-danger btn-sm mx-1" id="clear">
+                                                    Clear
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-sm mx-1" id="save">
+                                                    Sign
+                                                </button>
+                                            </div>
+                                        </button>
+                                        <div class="text-center">
+                                            Jaka Sembung
+                                        </div>
+                                        <div class="">
+                                            <hr class="m-0 p-0">
+                                            <span>date</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

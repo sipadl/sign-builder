@@ -10,4 +10,5 @@
         @yield('main')
     </div>
 </div>
+@include('./layouts.modal')
 @include('./layouts.footer')
