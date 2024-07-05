@@ -1,13 +1,16 @@
 @extends('./layouts/base') @section('main')
 <div class="">
-    <div class="h2 mt-2 mb-1">Form Migration Plan</div>
+    <div class="d-flex justify-content-between">
+        <div class="h2 mt-2 mb-1">Form Migration Plan</div>
+        <div class="align-self-center">
+            <button class="btn btn-sm btn-warning p-2" id="savetopdf" onclick="savepdf()">Export to PDF</button>
+        </div>
+    </div>
     <div class="card">
         <img src="" alt="logo mti">
         <div class="d-flex justify-content-around">
             <div class="h2">CHANGE IMPACT ANALYSIS</div>
         </div>
-        <form action="{{route('post')}}" method="post" enctype="multipart/form-data">
-            @csrf
             <div class="row p-2">
                 <div class="col-md-4">
                     <div class="form-group row text-right">
@@ -19,6 +22,8 @@
                                 type="text"
                                 name="redmine_no"
                                 id=""
+                                value="{{$data->redmine_no}}"
+                                readonly
                                 class="form-control"
                                 placeholder="#1234"
                                 required="required">
@@ -35,6 +40,8 @@
                                 type="text"
                                 name="title"
                                 id=""
+                                value="{{$data->title}}"
+                                readonly
                                 class="form-control"
                                 placeholder="For Testing Only"
                                 required="required">
@@ -45,11 +52,14 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Changes Area</label>
                         <div class="col-md-10 col-xs-12">
-                            <select name="changes_area[]" class="form-control" id="" multiple="multiple">
-                                @foreach($master_data_changes as $changes_area)
-                                <option value="{{ $changes_area->id }}">{{ $changes_area->name }}</option>
+                            <ul>
+                                @php
+                                    $changes = DB::table('master_data_changes')->where('id', $data->changes_area)->get();
+                                @endphp
+                                @foreach ($changes as $item)
+                                <li>{{$item->name}}</li>
                                 @endforeach
-                            </select>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -61,17 +71,21 @@
                                 <label for="message" class="mx-2">Existing Flow :</label>
                                 <textarea
                                     name="scope_existing"
+                                    value=""
+                                    readonly
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    rows="5">{{$data->scope_existing}}</textarea>
                             </div>
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Existing Flow :</label>
                                 <textarea
                                     name="scope_changes"
+                                    value=""
+                                    readonly
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    rows="5">{{$data->scope_changes}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -84,9 +98,11 @@
                                 <label for="message" class="mx-2">Please Note :</label>
                                 <textarea
                                     name="testing_requirement"
+                                    value=
+                                    readonly
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    rows="5">{{$data->testing_requirement}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -101,7 +117,8 @@
                                     name="uat_env_data"
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    readonly
+                                    rows="5">{{$data->uat_env_data}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -116,7 +133,8 @@
                                     name="data_testing"
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    readonly
+                                    rows="5">{{$data->data_testing}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -131,7 +149,8 @@
                                     name="setup_parameter"
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    readonly
+                                    rows="5">{{$data->setup_parameter}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -144,9 +163,10 @@
                                 <label for="message" class="mx-2">Please Note :</label>
                                 <textarea
                                     name="changes_of_exsiting_structure_file"
+                                    readonly
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    rows="5">{{$data->changes_of_exsiting_structure_file}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -161,7 +181,8 @@
                                     name="changes_of_database"
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    readonly
+                                    rows="5">{{$data->changes_of_database}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -176,7 +197,8 @@
                                     name="recomended_action"
                                     class="form-control border-0"
                                     id="message"
-                                    rows="5"></textarea>
+                                    readonly
+                                    rows="5">{{$data->recomended_action}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -185,21 +207,16 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Downtime Required</label>
                         <div class="col-md-10">
-                            <input type="radio" id="yes" name="down_time" value="Yes">
+                            <input type="radio" id="yes" name="down_time" value="Yes" readonly {{ $data->down_time == 'Yes' ? 'checked' : '' }}>
                             <label for="yes" class="col-form-label">Yes</label>
-                            <input type="radio" name="down_time" id="no" value="No">
+                            <input type="radio" name="down_time" id="no" value="No" readonly {{ $data->down_time == 'No' ? 'checked' : '' }}>
                             <label for="no" class="col-form-label">No</label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary btn-lg mx-1">Simpan</button>
-                <a href="route('main')" class="btn btn-danger btn-lg mx-1">Kembali</a>
-            </div>
-        </form>
             {{-- Table Signature --}}
-            @auth
+            {{-- @auth --}}
 
             <div class="p-2">
                 <div class="row p-2">
@@ -261,7 +278,36 @@
                     @endforeach
                 </div>
             </div>
-            @endauth
+            {{-- @endauth --}}
+
+            <div class="p-2">
+                <div class="p-2">
+                    <div class="row d-flex text-center">
+                        <div class="col-md-6 col-xs-6 border p-2">
+                            <div class="p mt-2">
+                                Changes Requestor
+                            </div>
+                            <div class="sign" style="min-height:5rem"></div>
+                            <p>Requestor</p>
+                            <hr class="m-0 p-0">
+                            <div class="text-left">
+                                <span>Date:</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6 border p-2">
+                            <div class="p mt-2">
+                                Change Approval
+                            </div>
+                            <div class="sign" style="min-height:5rem"></div>
+                            <p>Requestor</p>
+                            <hr class="m-0 p-0">
+                            <div class="text-left">
+                                <span>Date:</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 </div>
 @endsection

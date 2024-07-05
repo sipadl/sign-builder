@@ -3,6 +3,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <script>
+    let ids = '';
+    function setValue(id)
+    {
+        ids = id;
+    };
+
+
     document.addEventListener('DOMContentLoaded', function () {
         const canvas = document.getElementById('signature-pad');
         const signaturePad = new SignaturePad(canvas);
@@ -15,7 +22,7 @@
         }
 
         function openModal() {
-            $('#signatureModal').modal('show');
+            // $('#signatureModal').modal('show');
             setTimeout(resizeCanvas, 500); // Resize canvas after the modal is shown
         }
 
@@ -28,8 +35,11 @@
                 alert('Please provide a signature first.');
             } else {
                 const dataUrl = signaturePad.toDataURL('image/png');
-                console.log('Signature URL:', dataUrl);
-                // You can send the dataUrl to your server for saving the signature
+                $(`.signature-user-${ids}`).append(
+                    `<img width="120px" height="120px" src=${dataUrl} alt=".." />`
+                );
+                $(`#signature-${ids}`).val(dataUrl)
+                $(`.btn-sign-${ids}`).html('');
             }
         });
 

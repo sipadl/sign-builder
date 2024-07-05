@@ -19,13 +19,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $data = [
-            'Front-end', 'Middleware', 'Backend', 'Android EDC ( GST )', 'IPG', 'Android EDC ( Inhouse )', 'Data Management', 'Infrastructure', 'Other'
-        ];
+        // $data = [
+        //     'Front-end', 'Middleware', 'Backend', 'Android EDC ( GST )', 'IPG', 'Android EDC ( Inhouse )', 'Data Management', 'Infrastructure', 'Other'
+        // ];
 
-        for ($i = 0; $i < count($data); $i++) {
-            DB::table('master_data_changes')->insert(['name' => $data[$i]]);
-        }
+        // for ($i = 0; $i < count($data); $i++) {
+        //     DB::table('master_data_changes')->insert(['name' => $data[$i]]);
+        // }
     }
 
     /**

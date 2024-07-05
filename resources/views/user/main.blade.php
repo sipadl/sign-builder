@@ -49,7 +49,11 @@
                     role="tabpanel"
                     aria-labelledby="nav-home-tab"
                     tabindex="0">
-                    a
+                    <div class="list-group">
+                        @foreach($data as $dd)
+                        <a href="{{route('review', [$dd->id])}}" class="list-group-item list-group-item-action">{{ $dd->redmine_no.' - '.$dd->title}}</a>
+                        @endforeach
+                    </div>
                 </div>
                 {{-- waiting for sign --}}
                 <div
