@@ -1,9 +1,13 @@
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
 <script>
     let ids = '';
+    let ttd = ''
     function setValue(id)
     {
         ids = id;
@@ -38,13 +42,59 @@
                 $(`.signature-user-${ids}`).append(
                     `<img width="120px" height="120px" src=${dataUrl} alt=".." />`
                 );
-                $(`#signature-${ids}`).val(dataUrl)
+                $(`#sign-${ids}`).val(dataUrl)
+                ttd = dataUrl;
+                submitSignature()
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
                 $(`.btn-sign-${ids}`).html('');
             }
         });
 
         $('#signatureModal').on('shown.bs.modal', resizeCanvas); // Ensure canvas is resized when modal is shown
     });
+
+    function submitSignature() {
+        console.log(ids);
+        const group_head = $(`#group-head-${ids}`).val();
+        const impacted = $(`#impacted-${ids}`).val()
+        const notes = $(`#notes-${ids}`).val()
+        const sign = $(`#sign-${ids}`).val()
+        const kode = $(`#kode-${ids}`).val()
+        const redmine = $(`#redmine`).val()
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.post(
+            `/sign/${redmine}`,
+            {
+                group_head: ids,
+                impact: impacted,
+                notes: notes,
+                signature: ttd,
+                kode: kode
+            },
+            function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            "json" // Correcting the dataType parameter
+        );
+    }
+
+    function saveToPDF() {
+            const element = document.getElementById('pdf');
+            const opt = {
+                margin:       0.4,
+                filename:     'my_document.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 1 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
 </script>
 
 </body>

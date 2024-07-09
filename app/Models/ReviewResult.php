@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Signature extends Model
+class ReviewResult extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $table = 'signature';
+    protected $table = 'review_results';
 }

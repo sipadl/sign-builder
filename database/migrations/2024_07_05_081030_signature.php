@@ -11,7 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('signature', function (Blueprint $table) {
+            $table->id();
+            $table->string('redmine_no');
+            $table->string('group_head')->nullAble();
+            $table->string('impact')->nullAble();
+            $table->string('notes')->nullAble();
+            $table->text('signature')->nullAble();
+            $table->timestamps();
+
+        });
+
     }
 
     /**
@@ -19,6 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('signature');
+
     }
 };
