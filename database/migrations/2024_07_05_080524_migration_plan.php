@@ -11,23 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('migration_plan', function (Blueprint $table) {
+        Schema::create('impact_analisis', function (Blueprint $table) {
             $table->id();
-            $table->string('redmine_no');
-            $table->string('title');
-            $table->string('changes_area');
-            $table->string('scope_existing');
-            $table->string('scope_changes');
-            $table->string('testing_requirement');
-            $table->string('uat_env_data');
-            $table->string('data_testing');
-            $table->string('setup_parameter');
-            $table->string('changes_of_exsiting_structure_file');
-            $table->string('changes_of_database');
-            $table->string('recomended_action');
-            $table->string('down_time');
-            $table->string('request_by');
-            $table->string('group_head');
+            $table->string('redmine_no')->nullAble();
+            $table->string('title')->nullAble();
+            $table->string('changes_area')->nullAble();
+            $table->string('scope_existing')->nullAble();
+            $table->string('scope_changes')->nullAble();
+            $table->string('testing_requirement')->nullAble();
+            $table->string('uat_env_data')->nullAble();
+            $table->string('data_testing')->nullAble();
+            $table->string('setup_parameter')->nullAble();
+            $table->string('changes_of_exsiting_structure_file')->nullAble();
+            $table->string('changes_of_database')->nullAble();
+            $table->string('recomended_action')->nullAble();
+            $table->string('down_time')->nullAble();
+            $table->string('down_time_message')->nullAble();
+            $table->text('request_by')->nullAble();
+            $table->string('group_head')->nullAble();
+            $table->string('project_manager')->nullAble();
             $table->integer('status')->default(1);
             $table->timestamps();
         });
@@ -38,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('migration_plan');
+        Schema::dropIfExists('impact_analisis');
     }
 };

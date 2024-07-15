@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MasterDataChangesSeeder::class,
             MasterDataGroupSeeder::class,
+            MasterUserGroup::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',

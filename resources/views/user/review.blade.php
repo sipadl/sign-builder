@@ -326,6 +326,88 @@
                             @endif
                         </div>
                         </div>
+                        @elseif($gh->tipe == 2 )
+                        <div class="col-md-4 col-xs-12 text-left border">
+                            {{$gh->divisi}}
+                        </div>
+                        <div class="col-md-4 col-xs-12 text-center border">
+                            <div class="form-group row">
+                                @if(isset($sign))
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <input type="radio" id="yes" name="impacted" disabled value="Yes" readonly {{ $sign->impact == 'Yes' ? 'checked' : '' }}>
+                                        <label for="impacted" class="col-form-label">Yes</label>
+                                        <input type="radio" id="no" name="impacted" disabled value="Yes" readonly {{ $sign->impact == 'No' ? 'checked' : '' }}>
+                                        <label for="impacted" class="col-form-label">No</label>
+                                    </div>
+                                    <div class="card text-start my-2">
+                                        <label for="message" class="mx-2">Please Note :</label>
+                                        <textarea name="notes" id="notes" rows="5" class="form-control border-0" readonly>{{$sign->notes ?? ''}}</textarea>
+                                    </div>
+                                </div>
+                                @else
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <input type="radio" id="impacted-{{$gh->id}}" name="impacted" value="Yes">
+                                        <label for="impacted" class="col-form-label">Yes</label>
+                                        <input type="radio" name="impacted" id="impacted-{{$gh->id}}" value="No">
+                                        <label for="impacted" class="col-form-label">No</label>
+                                    </div>
+                                    <div class="card text-start my-2">
+                                        <label for="message" class="mx-2">Please Note :</label>
+                                        <textarea name="notes" id="notes-{{$gh->id}}" rows="5" class="form-control border-0"></textarea>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12 text-center border align-content-end">
+                            <div class="">
+                                @if(isset($sign))
+                                <!-- Button trigger modal -->
+                                <div class="text-center">
+                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
+                                    <input type="hidden" name="sign" id="sign-{{$gh->id}}">
+                                    <img src="{{$sign->signature}}" width="120" height="120" alt="">
+                                    {{-- <div class="signature-user-{{$gh->id}}"></div> --}}
+                                    <!-- Button trigger modal -->
+                                    {{-- <div class="btn-sign-{{$gh->id}}">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
+                                            Sign
+                                        </button>
+                                    </div> --}}
+                                <div class="text-center">
+                                    {{$gh->name}}
+                                </div>
+                                <div class="text-start">
+                                    <hr class="m-0 p-0">
+                                    <span>Date : {{$sign->created_at}}</span>
+                                </div>
+                            </div>
+                            @else
+                             <!-- Button trigger modal -->
+                             <div class="text-center">
+                                <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
+                                <input type="hidden" name="sign" id="sign-{{$gh->id}}">
+                                <div class="signature-user-{{$gh->id}}"></div>
+                                <!-- Button trigger modal -->
+                                <div class="btn-sign-{{$gh->id}}">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
+                                        Sign
+                                    </button>
+                                </div>
+                            </button>
+                            <div class="text-center">
+                                {{$gh->name}}
+                            </div>
+                            <div class="text-start">
+                                <hr class="m-0 p-0">
+                                <span>Date :</span>
+                            </div>
+                        </div>
+                            @endif
+                        </div>
+                        </div>
                         @endif
                         @endforeach
                     </div>
@@ -344,10 +426,14 @@
                                 Changes Requestor
                             </div>
                             <div class="sign" style="min-height:5rem"></div>
-                            <p>Requestor</p>
+                            <div class="d-flex justify-content-around">
+                                @foreach(json_decode($data->request_by) as $requestor)
+                                <p>{{ json_decode($data->request_by)[0]}}</p>
+                                @endforeach
+                            </div>
                             <hr class="m-0 p-0">
                             <div class="text-left">
-                                <span>Date:</span>
+                                <span>Date: {{$data->created_at}}</span>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-6 border p-2">
@@ -355,7 +441,7 @@
                                 Change Approval
                             </div>
                             <div class="sign" style="min-height:5rem"></div>
-                            <p>Requestor</p>
+                            <p>{{$data->group_head}}</p>
                             <hr class="m-0 p-0">
                             <div class="text-left">
                                 <span>Date:</span>

@@ -1,9 +1,11 @@
-@extends('./layouts/base') @section('main')
+@extends('./layouts/base')
+@section('title', $title ?? 'Formia' )
+@section('main')
 <div class="pt-3">
     <div class="d-flex justify-content-between py-2">
         <div class="h2" id="title">title sementara ( handle pake js )</div>
         <div class="">
-            <a href="{{ route('add') }}" class="btn btn-primary w-100"> tambahkan migration plan</a>
+            <a href="{{ route('add') }}" class="btn btn-primary w-100"> tambahkan Impact Analysis</a>
         </div>
     </div>
         <div class="row">
@@ -11,23 +13,32 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" id="navId">
             <li class="nav-item">
-                <a href="#tab1Id" class="nav-link active">List Migration Plan</a>
+                <a href="#tab1Id" class="nav-link active">List Impact Analysis</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sign</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#tab2Id">Waiting for Sign</a>
-                    <a class="dropdown-item" href="#tab3Id">Sign in By You</a>
+                    <a class="dropdown-item" href="{{route('wait')}}">Waiting for Sign</a>
+                    <a class="dropdown-item" href="{{route('signed')}}">Sign in By You</a>
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#tab5Id" class="nav-link">Complete Sign</a>
+                <a href="{{route('complete')}}" class="nav-link">Complete Sign</a>
             </li>
         </ul>
         <div class="list-group mt-2">
+            @if(isset($data->items))
             @foreach($data as $dd)
             <a href="{{route('review', [$dd->id])}}" class="list-group-item list-group-item-action">{{ $dd->redmine_no.' - '.$dd->title}}</a>
             @endforeach
+            @else
+            <div class="text-center mt-4">
+
+                <div class="h5" style="opacity: 40%;">
+                    Data Kosong
+                </div>
+            </div>
+            @endif
         </div>
         <!-- Tab panes -->
         <div class="tab-content">

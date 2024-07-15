@@ -95,6 +95,13 @@
             };
             html2pdf().set(opt).from(element).save();
         }
+
+    function addRequestor()
+    {
+        $('.requester').append(`
+        <input type="text" id="yes" class="form-control mt-1" required name="request_by[]">
+        `)
+    }
 </script>
 
 </body>
