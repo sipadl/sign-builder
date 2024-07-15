@@ -56,13 +56,13 @@
     });
 
     function submitSignature() {
-        console.log(ids);
         const group_head = $(`#group-head-${ids}`).val();
-        const impacted = $(`#impacted-${ids}`).val()
+        const impacted = $(`input[name="impacted-${ids}"]:checked`).val();
         const notes = $(`#notes-${ids}`).val()
         const sign = $(`#sign-${ids}`).val()
         const kode = $(`#kode-${ids}`).val()
         const redmine = $(`#redmine`).val()
+        console.log(impacted)
         jQuery.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')

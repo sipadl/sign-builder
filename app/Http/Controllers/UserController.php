@@ -61,7 +61,6 @@ class UserController extends Controller
 
     public function review($id)
     {
-
         $master_data_changes = MasterDataChanges::where('status', 1)->get();
         $master_data_gh = MasterDataGroup::get();
         $data = ImpactAnalisis::find($id);
@@ -73,6 +72,9 @@ class UserController extends Controller
     {
         // dd($request);
         $data = $request->except('_token');
+        if($data['impact'] == null || ''){
+            $data['impact'] = 'No';
+        }
         $data['redmine_no'] = $id;
         $submit = Signature::create($data);
     }

@@ -125,7 +125,14 @@ class MasterUserGroup extends Seeder
                 'id_group' => 99,
                 'name' => 'Administrator',
                 'kode' => 'administrator',
-                'email' => 'administrator@tst.co.id',
+                'email' => 'admin@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 98,
+                'name' => 'IT Incident',
+                'kode' => 'incident',
+                'email' => 'incident@tst.co.id',
                 'password' => Hash::make('Mti123!@#')
             ],
         ];

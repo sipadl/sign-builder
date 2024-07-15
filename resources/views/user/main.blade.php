@@ -27,7 +27,7 @@
             </li>
         </ul>
         <div class="list-group mt-2">
-            @if(isset($data->items))
+            @if(!isset($data->items))
             @foreach($data as $dd)
             <a href="{{route('review', [$dd->id])}}" class="list-group-item list-group-item-action">{{ $dd->redmine_no.' - '.$dd->title}}</a>
             @endforeach

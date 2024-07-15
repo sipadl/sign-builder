@@ -8,6 +8,10 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/shared-sign/{redmine}/{id}/{base64}',[App\Http\Controllers\HomeController::class,'shared_sign'])->name('requestor.sign');
+Route::post('/sign-share/{id}', [App\Http\Controllers\HomeController::class, 'simpanSign'])->name('signed.share');
+
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/main', [App\Http\Controllers\UserController::class, 'index'])->name('main');
