@@ -102,6 +102,11 @@
         <input type="text" id="yes" class="form-control mt-1" required name="request_by[]">
         `)
     }
+
+    function closealert()
+    {
+        $('#alert-baru').fadeOut();
+    }
 </script>
 
 </body>

@@ -28,6 +28,9 @@
                     text-align: center;
                     margin-top: 10px;
                 }
+                .spesial-case a, a {
+                    text-decoration: none;
+                }
             </style>
     </head>
     <body>

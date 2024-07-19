@@ -19,8 +19,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/alreadySign', [App\Http\Controllers\UserController::class, 'alreadysign'])->name('signed');
     Route::get('/completeSign', [App\Http\Controllers\UserController::class, 'complete'])->name('complete');
     Route::get('/add', [App\Http\Controllers\UserController::class, 'add'])->name('add');
+    Route::get('/setting', [App\Http\Controllers\UserController::class, 'setting'])->name('setting');
     Route::get('/review/{id}', [App\Http\Controllers\UserController::class, 'review'])->name('review');
     Route::post('/post-redmine', [App\Http\Controllers\UserController::class, 'post'])->name('post');
+    Route::post('/cari', [App\Http\Controllers\UserController::class, 'cari'])->name('cari');
     Route::post('/sign/{id}', [App\Http\Controllers\UserController::class, 'simpanSign'])->name('sign');
     Route::get('/logout', [App\Http\Controllers\UserController::class ,'logout'])->name('logout');
 });

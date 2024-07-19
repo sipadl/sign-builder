@@ -33,6 +33,7 @@ class HomeController extends Controller
         $data = ImpactAnalisis::where('redmine_no', $redmine)->first();
         $requestor = base64_decode($requestor);
         $requestor = Str::lower(str_replace(' ', '', $requestor));
+        // $this->Logging(Auth::user(), 2, $id);
         return view('user.sign', compact('redmine', 'index','data', 'requestor'));
     }
 

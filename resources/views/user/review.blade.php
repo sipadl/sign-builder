@@ -314,7 +314,7 @@
                                 <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                 <div class="signature-user-{{$gh->id}}"></div>
                                 <!-- Button trigger modal -->
-                                @if($auth->kode == $gh->kode)
+                                @if($auth->kode == $gh->kode || $auth->kode == 'administrator')
                                 <div class="btn-sign-{{$gh->id}}">
                                     <button type="button" class="btn btn-primary btn-sm w-100" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
                                         Sign
@@ -398,7 +398,7 @@
                                 <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                 <div class="signature-user-{{$gh->id}}"></div>
                                 <!-- Button trigger modal -->
-                                @if($auth->kode == $gh->kode || $auth == 'administrator')
+                                @if($auth->kode == $gh->kode || $auth->kode == 'administrator')
                                 <div class="btn-sign-{{$gh->id}}">
                                     <button type="button" class="btn btn-primary btn-sm w-100" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
                                         Sign
