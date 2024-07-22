@@ -25,6 +25,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cari', [App\Http\Controllers\UserController::class, 'cari'])->name('cari');
     Route::post('/sign/{id}', [App\Http\Controllers\UserController::class, 'simpanSign'])->name('sign');
     Route::get('/logout', [App\Http\Controllers\UserController::class ,'logout'])->name('logout');
+    Route::post('/changePasswords', [App\Http\Controllers\UserController::class, 'changePassword'])->name('password.update');
+    Route::get('/changePassword', [App\Http\Controllers\UserController::class ,'showChangePasswordForm'])->name('password.change');
+    Route::get('/userCreate', [App\Http\Controllers\UserController::class ,'createUser'])->name('setting.user');
+    Route::post('/userCreates', [App\Http\Controllers\UserController::class ,'postCreateUser'])->name('setting.user.post');
 });
 
 

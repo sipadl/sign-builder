@@ -147,6 +147,50 @@ class UserController extends Controller
         return view('user.setting');
     }
 
+    public function changePassword(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('password.change')
+                             ->withErrors($validator)
+                             ->withInput();
+        }
+
+        // Cek password lama
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
+            return redirect()->route('password.change')
+                             ->withErrors(['current_password' => 'Password lama tidak sesuai'])
+                             ->withInput();
+        }
+
+        // Update password baru
+        $user = Auth::user();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('password.change')->with('status', 'Password berhasil diubah');
+    }
+
+    public function showChangePasswordForm()
+    {
+        return view('user.setting.password');
+    }
+
+    public function createUser()
+    {
+        return view('user.setting.create');
+    }
+
+    public function postCreateUser(Request $request)
+    {
+        dd($request);
+        return redirect()->route('users.create')->with('status', 'Pengguna berhasil ditambahkan');
+    }
 
     public function logout()
     {
