@@ -4,9 +4,11 @@
 <div class="pt-3">
     <div class="d-flex justify-content-between py-2">
         <div class="h2" id="title">{{ $title }}</div>
+        @if(Auth::user()->group_id == 99 || 98)
         <div class="">
             <a href="{{ route('add') }}" class="btn btn-primary w-100"> Tambahkan Baru</a>
         </div>
+        @endif
     </div>
         <div class="row">
             @if(session('msg'))
@@ -92,26 +94,23 @@
                             }
                         }
                     @endphp
-                   <div class="accordion-item">
+                  <div class="accordion-item">
                     <h2 class="accordion-header" id="heading{{$index}}">
-                        <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$index}}" aria-expanded="false" aria-controls="collapse{{$index}}">
+                        <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="false" aria-controls="collapse{{$index}}">
                             {{ 'Redmine No. #'.$dd->redmine_no.' | Case: '.$dd->title }}
                         </button>
                     </h2>
-                    <div id="collapse{{$index}}" class="accordion-collapse collapse" aria-labelledby="heading{{$index}}" data-bs-parent="#impactAnalysisAccordion">
+                    <div id="collapse{{$index}}" class="accordion-collapse collapse" aria-labelledby="heading{{$index}}" data-parent="#impactAnalysisAccordion">
                         <div class="accordion-body">
                             <div class="card p-3">
+
                                 <div class="h5">Menunggu Sign dari:</div>
                                 <ol>
                                     @foreach ($map as $mm)
-                                    @if(count($map) >= 1)
-                                        <li><small>{{$mm->name}}</small></li>
-                                    @else
-                                        <li><small>Completed</small></li>
-                                    @endif
-                                    @endforeach
-                                </ol>
-                            </div>
+                                    <li><small>{{$mm->name}}</small></li>
+                                @endforeach
+                            </ol>
+                        </div>
                             <div class="d-flex justify-content-end mt-2">
                                 <a href="{{route('review', [$dd->id])}}" class="btn btn-primary text-end">Review</a>
                             </div>

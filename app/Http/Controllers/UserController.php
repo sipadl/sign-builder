@@ -9,6 +9,8 @@ use App\Models\ImpactAnalisis;
 use App\Models\ReviewResult;
 use App\Models\Signature;
 use App\Models\Logging;
+use Barryvdh\DomPDF\Facade\Pdf; // Import the facade
+use App\Models\ReasonExport;
 use Auth;
 use DB;
 use Str;
@@ -92,9 +94,11 @@ class UserController extends Controller
     }
 
     public function add() {
+        $title = 'Tambah Impact Analysis';
+
         $master_data_changes = MasterDataChanges::where('status', 1)->get();
         $master_data_gh = MasterDataGroup::get();
-        return view('user.add', compact('master_data_changes', 'master_data_gh'));
+        return view('user.add', compact('master_data_changes', 'master_data_gh','title'));
     }
 
     public function post(Request $request) {
@@ -118,8 +122,9 @@ class UserController extends Controller
         $master_data_changes = MasterDataChanges::where('status', 1)->get();
         $master_data_gh = MasterDataGroup::get();
         $data = ImpactAnalisis::find($id);
+        $title = 'Impact Analysis #'.$data->redmine_no;
         $signature = ReviewResult::where('redmine_no', $data->redmine_id)->first();
-        return view('user.review', compact('data','master_data_changes', 'master_data_gh', 'signature'));
+        return view('user.review', compact('data','master_data_changes', 'master_data_gh', 'signature','title'));
     }
 
     public function simpanSign(Request $request, $id)
@@ -176,6 +181,35 @@ class UserController extends Controller
         return redirect()->route('password.change')->with('status', 'Password berhasil diubah');
     }
 
+    public function submitReason(Request $request, $id)
+    {
+        $data = ReasonExport::create([
+            'redmine_no' => $id,
+            'reason' => $request->reason
+        ]);
+
+        $data = ImpactAnalisis::where('redmine_no', $id)->first();
+        $pdf = $this->exportPdf($data);
+        return $pdf->download('p.pdf');
+
+    }
+
+
+    public function exportPdf($data)
+    {
+        // Data to be passed to the view
+        $data = [
+            'title' => 'Redmine No. ***',
+            'heading' => 'Hello, World!',
+            'data' => $data
+        ];
+
+        // Load the view and pass the data
+        $pdf = Pdf::loadView('export.pdf', $data);
+
+        return $pdf;
+    }
+
     public function showChangePasswordForm()
     {
         return view('user.setting.password');
@@ -188,7 +222,6 @@ class UserController extends Controller
 
     public function postCreateUser(Request $request)
     {
-        dd($request);
         return redirect()->route('users.create')->with('status', 'Pengguna berhasil ditambahkan');
     }
 

@@ -29,3 +29,33 @@
         </div>
     </div>
 </div>
+
+
+<!-- Warning Modal -->
+<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="warningModalLabel">Export Pdf</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Information Message -->
+                <div class="alert alert-warning" role="alert">
+                    Tolong konfirmasi alasan sebelum export data
+                </div>
+                <!-- Form -->
+                <form id="reasonForm" action="{{ route('submitReason', [$data->redmine_no ?? '']) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="reason">Reason</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Reason</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
-@extends('./layouts/base') @section('main')
+@extends('./layouts/base')
+@section('title', $title ?? 'Formia' )
+@section('main')
 <div class="">
     <div class="h2 mt-2 mb-1">Form Impact Analysis</div>
     <div class="card">
