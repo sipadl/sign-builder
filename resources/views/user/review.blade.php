@@ -1,4 +1,6 @@
-@extends('./layouts/base') @section('main')
+@extends('./layouts/base')
+@section('title', 'Review - Redmine No #'.$data->redmine_no)
+@section('main')
 <div class="">
     <div class="d-flex justify-content-between">
         <div class="h2 mt-2 mb-1">Form Impact Analysis</div>

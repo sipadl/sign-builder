@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -13,7 +13,6 @@ Route::post('/sign-share/{id}', [App\Http\Controllers\HomeController::class, 'si
 
 
 Route::middleware(['auth'])->group(function () {
-
     Route::get('/main', [App\Http\Controllers\UserController::class, 'index'])->name('main');
     Route::get('/waitingSign', [App\Http\Controllers\UserController::class, 'waitingforsign'])->name('wait');
     Route::get('/alreadySign', [App\Http\Controllers\UserController::class, 'alreadysign'])->name('signed');
