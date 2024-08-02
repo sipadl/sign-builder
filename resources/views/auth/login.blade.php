@@ -4,7 +4,7 @@
 <style>
     .login-box {
         width: 400px;
-        height: 300px;
+        /* height: 300px; */
         margin: 100px auto;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

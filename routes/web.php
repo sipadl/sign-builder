@@ -29,6 +29,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/changePassword', [App\Http\Controllers\UserController::class ,'showChangePasswordForm'])->name('password.change');
     Route::get('/userCreate', [App\Http\Controllers\UserController::class ,'createUser'])->name('setting.user');
     Route::post('/userCreates', [App\Http\Controllers\UserController::class ,'postCreateUser'])->name('setting.user.post');
+    Route::post('/submitReason/{id}', [App\Http\Controllers\UserController::class ,'submitReason'])->name('submitReason');
+
+
+    Route::get('/export-pdf/{id}', [App\Http\Controllers\UserController::class ,'exportPdf'])->name('exportPdf');
+
+    Route::get('display-pdf', function() {
+        return view('export.pdf');
+    });
+
 });
 
 

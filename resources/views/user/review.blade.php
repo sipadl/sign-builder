@@ -1,10 +1,30 @@
-@extends('./layouts/base') @section('main')
+@extends('./layouts/base')
+@section('title', $title ?? 'Formia' )
+@section('main')
 <div class="">
     <div class="d-flex justify-content-between">
         <div class="h2 mt-2 mb-1">Form Impact Analysis</div>
+        @php
+
+        $count_gh = DB::table('master_data_group_head')->count();
+        $count_req = count(json_decode($data->request_by));
+        // dd($count_gh + $count_req);
+        $hasil = ($count_gh + $count_req + 1);
+        $exists_sign = DB::table('signature')->where('redmine_no', $data->redmine_no)->count();
+
+        $is_warning = DB::table('reason_exports')->where('redmine_no', $data->redmine_no)->get();
+        @endphp
+        @if($hasil == $exists_sign)
         <div class="align-self-center">
             <button class="btn btn-sm btn-warning p-2" id="savetopdf" onclick="saveToPDF()">Export to PDF</button>
         </div>
+        @else
+        @if($is_warning)
+        <button type="button" class="btn btn-sm btn-warning p-2 m-2" data-toggle="modal" data-target="#warningModal">
+            Export Pdf
+        </button>
+        @endif
+        @endif
     </div>
     <div class="card" id="pdf">
         {{-- <div class="d-flex justify-content-center"> --}}
@@ -440,10 +460,14 @@
                                     @if($sign)
                                     <img src="{{$sign->signature}}" width="120" height="120" alt="">
                                     @else
+                                    @if(Auth::user()->group_id == 3);
                                     <div class="sign" style="min-height:4rem"></div>
                                     <a href="{{route('requestor.sign', [$data->redmine_no,$key, base64_encode($requestor)] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
                                         Sign
                                     </a>
+                                    @else
+                                    <div class="sign" style="min-height:7rem"></div>
+                                    @endif
                                     @endif
                                     <p>{{ $requestor }}</p>
                                 </div>
@@ -464,10 +488,14 @@
                             @endphp
                             <div class="btn-gh-{{$data->group_head}}">
                                 @if(!$signGH)
-                                <div class="sign" style="min-height:4rem"></div>
-                                <a href="{{route('requestor.sign', [$data->redmine_no,'GH', base64_encode($data->group_head )] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
-                                    Sign
-                                </a>
+                                    @if(Auth::user()->group_id == 3);
+                                    <div class="sign" style="min-height:4rem"></div>
+                                    <a href="{{route('requestor.sign', [$data->redmine_no,'GH', base64_encode($data->group_head )] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
+                                        Sign
+                                    </a>
+                                    @else
+                                    <div class="sign" style="min-height:7rem"></div>
+                                    @endif
                                 @else
                                 <img src="{{$signGH->signature}}" width="120" height="120" alt="">
                                 @endif
