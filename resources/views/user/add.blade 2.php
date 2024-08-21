@@ -22,7 +22,7 @@
                                 name="redmine_no"
                                 id=""
                                 class="form-control"
-                                placeholder="1234"
+                                placeholder="#1234"
                                 required="required">
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                     rows="5"></textarea>
                             </div>
                             <div class="card mt-1 mb-1">
-                                <label for="message" class="mx-2">To Be Flow :</label>
+                                <label for="message" class="mx-2">Existing Flow :</label>
                                 <textarea
                                     name="scope_changes"
                                     class="form-control border-0"
@@ -84,7 +84,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="testing_requirement"
                                     class="form-control border-0"
                                     id="message"
@@ -99,7 +99,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="uat_env_data"
                                     class="form-control border-0"
                                     id="message"
@@ -114,7 +114,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="data_testing"
                                     class="form-control border-0"
                                     id="message"
@@ -129,7 +129,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="setup_parameter"
                                     class="form-control border-0"
                                     id="message"
@@ -144,7 +144,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="changes_of_exsiting_structure_file"
                                     class="form-control border-0"
                                     id="message"
@@ -159,7 +159,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="changes_of_database"
                                     class="form-control border-0"
                                     id="message"
@@ -174,7 +174,7 @@
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
                                 <label for="message" class="mx-2">Please Note :</label>
-                                <textarea required
+                                <textarea
                                     name="recomended_action"
                                     class="form-control border-0"
                                     id="message"
@@ -232,7 +232,7 @@
             </div>
             <div class="d-flex justify-content-end my-4 p-2">
                 <button type="submit" class="btn btn-primary btn-lg mx-1">Simpan</button>
-                <a href="{{ route('main') }}" class="btn btn-danger btn-lg mx-1">Kembali</a>
+                <a href="route('main')" class="btn btn-danger btn-lg mx-1">Kembali</a>
             </div>
         </form>
         </div>

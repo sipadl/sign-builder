@@ -1,11 +1,6 @@
 @extends('./layouts/base')
 @section('title', $title ?? 'Formia' )
 @section('main')
-<style>
-    svg {
-        display: none ;
-    }
-</style>
 <div class="pt-3">
     <div class="d-flex justify-content-between py-2">
         <div class="h2" id="title">{{ $title }}</div>

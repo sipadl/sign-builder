@@ -10,25 +10,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <script>
-function validateInput(input) {
-    const pattern = /^[a-zA-Z0-9]*$/;
-    if (!pattern.test(input.value)) {
-        input.setCustomValidity("No special characters allowed.");
-    } else {
-        input.setCustomValidity("");
-    }
-}
-</script>
-
-<script>
     let ids = '';
     let ttd = ''
     function setValue(id)
     {
         ids = id;
     };
-    
-    
+
 
     document.addEventListener('DOMContentLoaded', function () {
         const canvas = document.getElementById('signature-pad');
@@ -62,7 +50,7 @@ function validateInput(input) {
                 ttd = dataUrl;
                 submitSignature()
                 setTimeout(() => {
-                    location.reload();
+                    // location.reload();
                 }, 500);
                 $(`.btn-sign-${ids}`).html('');
             }
@@ -85,7 +73,7 @@ function validateInput(input) {
             }
         });
         $.post(
-            `/sign/sign/${redmine}`,
+            `/sign/${redmine}`,
             {
                 group_head: ids,
                 impact: impacted ? impacted : null,
@@ -100,11 +88,11 @@ function validateInput(input) {
         );
     }
 
-    function saveToPDF(name) {
+    function saveToPDF() {
             const element = document.getElementById('pdf');
             const opt = {
                 margin:       0.4,
-                filename:     `${name}_change_impact_analisis.pdf`,
+                filename:     'my_document.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 1 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }

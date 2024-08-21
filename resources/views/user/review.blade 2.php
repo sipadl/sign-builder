@@ -17,17 +17,13 @@
         @endphp
         @if($hasil == $exists_sign)
         <div class="align-self-center">
-            <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
-
+            <button class="btn btn-sm btn-warning p-2" id="savetopdf" onclick="saveToPDF()">Export to PDF</button>
         </div>
         @else
         @if($is_warning)
-        <div class="align-self-center">
-            <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
-        </div>
-        <!--<button type="button" class="btn btn-sm btn-warning p-2 m-2" data-toggle="modal" data-target="#warningModal">-->
-        <!--    Export Pdf-->
-        <!--</button>-->
+        <button type="button" class="btn btn-sm btn-warning p-2 m-2" data-toggle="modal" data-target="#warningModal">
+            Export Pdf
+        </button>
         @endif
         @endif
     </div>
@@ -54,7 +50,7 @@
                                 type="text"
                                 name="redmine_no"
                                 id="redmine"
-                                value="{{$data->redmine_no}}"
+                                value="{{$data->id}}"
                                 readonly
                                 class="form-control"
                                 placeholder="#1234"
@@ -269,7 +265,7 @@
                             $data_map = explode(" ", $gh->divisi);
                             $data_map = strtolower($data_map[count($data_map) - 2 ].'_'.$data_map[count($data_map) - 1 ]);
 
-                            $sign = DB::table('signature')->where('redmine_no', $data->redmine_no)->where('group_head', $gh->id)->first();
+                            $sign = DB::table('signature')->where('redmine_no', $data->id)->where('group_head', $gh->id)->first();
                         @endphp
                         @if($gh->tipe == 1)
                         <div class="col-md-4 col-xs-12 text-left border">
@@ -290,8 +286,7 @@
                                         <textarea name="notes" id="notes" rows="5" class="form-control border-0" readonly>{{$sign->notes ?? ''}}</textarea>
                                     </div>
                                 </div>
-                                @elseif(Auth::user()->id == $gh->id || Auth::user()->group_id == 99)
-                                
+                                @else
                                 <div class="col-md-12">
                                     <div class="text-center">
                                         <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
@@ -302,20 +297,6 @@
                                     <div class="card text-start my-2">
                                         <label for="message" class="mx-2">Please Note :</label>
                                         <textarea name="notes" id="notes-{{$gh->id}}" rows="5" class="form-control border-0"></textarea>
-                                    </div>
-                                </div>
-                                @else
-                                
-                                <div class="col-md-12">
-                                    <div class="text-center">
-                                        <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes" disabled >
-                                        <label for="impacted-{{$gh->id}}-yes" class="col-form-label">Yes</label>
-                                        <input type="radio" id="impacted-{{$gh->id}}-no" name="impacted-{{$gh->id}}" value="No" disabled >
-                                        <label for="impacted-{{$gh->id}}-no" class="col-form-label">No</label>
-                                    </div>
-                                    <div class="card text-start my-2">
-                                        <label for="message" class="mx-2">Please Note :</label>
-                                        <textarea name="notes" id="notes-{{$gh->id}}" rows="5" class="form-control border-0" disabled ></textarea>
                                     </div>
                                 </div>
                                 @endif
@@ -379,7 +360,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12 text-center border">
                             <div class="form-group row">
-                                @if(isset($sign) && Auth::user()->id == $gh->id )
+                                @if(isset($sign))
                                 <div class="col-md-12">
                                     <div class="text-center">
                                         <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
@@ -392,7 +373,7 @@
                                         <textarea name="notes" id="notes" rows="5" class="form-control border-0" readonly>{{$sign->notes ?? ''}}</textarea>
                                     </div>
                                 </div>
-                                @elseif(Auth::user()->id == $gh->id || Auth::user()->group_id == 99)
+                                @else
                                 <div class="col-md-12">
                                     <div class="text-center">
                                         <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
@@ -403,19 +384,6 @@
                                     <div class="card text-start my-2">
                                         <label for="message" class="mx-2">Please Note :</label>
                                         <textarea name="notes" id="notes-{{$gh->id}}" rows="5" class="form-control border-0"></textarea>
-                                    </div>
-                                </div>
-                                @else
-                                <div class="col-md-12">
-                                    <div class="text-center">
-                                        <input disabled type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
-                                        <label for="impacted-{{$gh->id}}-yes" class="col-form-label">Yes</label>
-                                        <input disabled type="radio" id="impacted-{{$gh->id}}-no" name="impacted-{{$gh->id}}" value="No">
-                                        <label for="impacted-{{$gh->id}}-no" class="col-form-label">No</label>
-                                    </div>
-                                    <div class="card text-start my-2">
-                                        <label for="message" class="mx-2">Please Note :</label>
-                                        <textarea disabled name="notes" id="notes-{{$gh->id}}" rows="5" class="form-control border-0"></textarea>
                                     </div>
                                 </div>
                                 @endif
@@ -429,6 +397,13 @@
                                     <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
                                     <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                     <img src="{{$sign->signature}}" width="120" height="120" alt="">
+                                    {{-- <div class="signature-user-{{$gh->id}}"></div> --}}
+                                    <!-- Button trigger modal -->
+                                    {{-- <div class="btn-sign-{{$gh->id}}">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
+                                            Sign
+                                        </button>
+                                    </div> --}}
                                 <div class="text-center">
                                     {{$gh->name}}
                                 </div>
