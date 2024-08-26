@@ -12,6 +12,7 @@ use App\Models\Logging;
 use Barryvdh\DomPDF\Facade\Pdf; // Import the facade
 use App\Models\ReasonExport;
 use Auth;
+use App\Models\User;
 use DB;
 use Str;
 
@@ -25,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
         $title = 'List Impact Analysis';
-        $data = ImpactAnalisis::orderBy('created_at', 'desc')->simplePaginate(20);
+        $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
         return view('user.main', compact('data','title','logging'));
     }
@@ -45,7 +46,7 @@ class UserController extends Controller
             // ->orderBy('ia.created_at', 'desc')
             // ->paginate(20);
            // Eksekusi query untuk mendapatkan redmine_no
-            
+
             $data = DB::table('impact_analisis as a')
         ->join('signature as s', 's.redmine_no', '=', 'a.redmine_no')
         ->where('s.group_head', '!=', 7)
@@ -106,7 +107,8 @@ class UserController extends Controller
 
         $master_data_changes = MasterDataChanges::where('status', 1)->get();
         $master_data_gh = MasterDataGroup::get();
-        return view('user.add', compact('master_data_changes', 'master_data_gh','title'));
+        $user = User::get();
+        return view('user.add', compact('master_data_changes', 'master_data_gh','title','user'));
     }
 
     public function post(Request $request) {
@@ -230,7 +232,34 @@ class UserController extends Controller
 
     public function postCreateUser(Request $request)
     {
-        return redirect()->route('users.create')->with('status', 'Pengguna berhasil ditambahkan');
+        // dd($request->all());
+        User::create($request->except('_token'));
+        return redirect()->route('manage.user')->with('msg', 'Pengguna berhasil ditambahkan');
+    }
+
+    public function managementUser()
+    {
+        $users = User::get();
+        return view('user.setting.management', compact('users'));
+    }
+
+    public function updateUser($id)
+    {
+        $user = User::find($id);
+        return view('user.setting.update', compact('user'));
+    }
+
+    public function deleteUser($id)
+    {
+        DB::table('users')->where('id', $id)->delete();
+        return redirect()->route('manage.user')->with('msg', 'Pengguna berhasil menghapus pengguna');
+
+    }
+
+    public function postUpdateUser($id, Request $request)
+    {
+        DB::table('users')->where('id', $id)->update($request->except('_token'));
+        return redirect()->route('manage.user')->with('msg', 'Pengguna berhasil diubah');
     }
 
     public function logout()

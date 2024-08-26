@@ -291,7 +291,7 @@
                                     </div>
                                 </div>
                                 @elseif(Auth::user()->id == $gh->id || Auth::user()->group_id == 99)
-                                
+
                                 <div class="col-md-12">
                                     <div class="text-center">
                                         <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
@@ -305,7 +305,7 @@
                                     </div>
                                 </div>
                                 @else
-                                
+
                                 <div class="col-md-12">
                                     <div class="text-center">
                                         <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes" disabled >
@@ -481,6 +481,7 @@
                                 @php
                                     $sign = DB::table('signature')->where('kode', Str::lower(str_replace(' ','',$requestor)))
                                     ->where('redmine_no', $data->redmine_no)->first();
+                                    $requestors = DB::table('users')->where('id', $requestor)->first();
                                 @endphp
                                 <div class="btn-requestor-{{$key}}">
                                     @if($sign)
@@ -495,7 +496,7 @@
                                     <div class="sign" style="min-height:7rem"></div>
                                     @endif
                                     @endif
-                                    <p>{{ $requestor }}</p>
+                                    <p>{{ $requestors->name }}</p>
                                 </div>
                                 @endforeach
                             </div>
@@ -511,6 +512,7 @@
                             @php
                                 $signGH = DB::table('signature')->where('kode', Str::lower(str_replace(' ','', $data->group_head)))
                                 ->where('redmine_no', $data->redmine_no)->first();
+                                $group_heads = DB::table('users')->where('id', $data->group_head)->first();
                             @endphp
                             <div class="btn-gh-{{$data->group_head}}">
                                 @if(!$signGH)
@@ -525,7 +527,7 @@
                                 @else
                                 <img src="{{$signGH->signature}}" width="120" height="120" alt="">
                                 @endif
-                                <p>{{$data->group_head}}</p>
+                                <p>{{ $group_heads->name }}</p>
                             </div>
                             <hr class="m-0 p-0">
                             <div class="text-left">

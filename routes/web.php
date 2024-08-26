@@ -27,9 +27,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/changePasswords', [App\Http\Controllers\UserController::class, 'changePassword'])->name('password.update');
     Route::get('/changePassword', [App\Http\Controllers\UserController::class ,'showChangePasswordForm'])->name('password.change');
     Route::get('/userCreate', [App\Http\Controllers\UserController::class ,'createUser'])->name('setting.user');
-    Route::post('/userCreates', [App\Http\Controllers\UserController::class ,'postCreateUser'])->name('setting.user.post');
+    Route::post('/postUpdateUser/{id}', [App\Http\Controllers\UserController::class ,'postUpdateUser'])->name('setting.user.update');
+    Route::get('/updateUser/{id}', [App\Http\Controllers\UserController::class ,'updateUser'])->name('setting.user.edit');
     Route::post('/submitReason/{id}', [App\Http\Controllers\UserController::class ,'submitReason'])->name('submitReason');
-
+    Route::post('/userCreates', [App\Http\Controllers\UserController::class ,'postCreateUser'])->name('buatUser');
+    Route::get('/manage-user', [App\Http\Controllers\UserController::class, 'managementUser'])->name('manage.user');
+    Route::delete('/deleteUser/{id}', [App\Http\Controllers\UserController::class ,'deleteUser'])->name('setting.user.delete');
 
     Route::get('/export-pdf/{id}', [App\Http\Controllers\UserController::class ,'exportPdf'])->name('exportPdf');
 

@@ -20,10 +20,11 @@
                             <input
                                 type="text"
                                 name="redmine_no"
-                                id=""
+                                id="redmine_no"
                                 class="form-control"
                                 placeholder="1234"
-                                required="required">
+                                required="required"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')">
                         </div>
                     </div>
                 </div>
@@ -38,7 +39,7 @@
                                 name="title"
                                 id=""
                                 class="form-control"
-                                placeholder="For Testing Only"
+                                placeholder="For Testing"
                                 required="required">
                         </div>
                     </div>
@@ -47,7 +48,7 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Changes Area</label>
                         <div class="col-md-10 col-xs-12">
-                            <select name="changes_area[]" class="form-control" id="" multiple="multiple">
+                            <select name="changes_area[]" class="form-control select2" placeholder="Pilih 1" multiple="multiple">
                                 @foreach($master_data_changes as $changes_area)
                                 <option value="{{ $changes_area->id }}">{{ $changes_area->name }}</option>
                                 @endforeach
@@ -206,18 +207,37 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Requestor By</label>
                         <div class="col-md-10 requester">
-                            <input type="text" id="yes" class="form-control mt-1" required name="request_by[]">
+                            @if(Auth::user()->id_group != 99 || 98)
+                            <input type="hidden" name="request_by[]" value="{{Auth::user()->id}}">
+                            <input type="text" class="form-control" name="name_group" value={{Auth::user()->name}} @readonly(true)>
+                            @else
+                            <select class="form-control mt-1 select2" required name="request_by[]">
+                                <option value=''>Pilih Requestor</option>
+                                @foreach($user as $us)
+                                    @if($us->id_group == 0)
+                                <option value="{{$us->id}}">{{$us->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @endif
                         </div>
                     </div>
                 </div>
-                <div class="col text-end mt-2">
+                {{-- <div class="col text-end mt-2">
                     <a href="javascript:void(0)" class="btn btn-primary btn-sm" onclick="addRequestor()">Tambah Requestor</a>
-                </div>
+                </div> --}}
                 <div class="col-md-12 col-xs-12 mt-2">
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Group Head</label>
                         <div class="col-md-10">
-                            <input type="text" id="yes" class="form-control" required name="group_head">
+                            <select  class="form-control mt-1 select3" required name="group_head">
+                                <option value=''>Pilih Group Head</option>
+                                @foreach($user as $us)
+                                    @if($us->id_group == 3)
+                                <option value="{{$us->id}}">{{$us->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -225,7 +245,14 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Project Manager</label>
                         <div class="col-md-10">
-                            <input type="text" id="yes" class="form-control" required name="project_manager">
+                            <select id="yes" class="form-control mt-1 select4" required name="project_manager">
+                                <option value=''>Pilih Project Manager</option>
+                                @foreach($user as $us)
+                                    @if($us->id_group == 4)
+                                <option value="{{$us->id}}">{{$us->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

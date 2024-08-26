@@ -1,24 +1,39 @@
-{{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap Bundle with Popper -->
-{{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script> --}}
+<!-- DataTables JS -->
+<script defer src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <script>
-function validateInput(input) {
-    const pattern = /^[a-zA-Z0-9]*$/;
-    if (!pattern.test(input.value)) {
-        input.setCustomValidity("No special characters allowed.");
-    } else {
-        input.setCustomValidity("");
-    }
-}
-</script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({
+            "language": {
+                "lengthMenu": "Tampilkan _MENU_ pengguna per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total pengguna)",
+                "search": "Cari:",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                },
+            },
+            "columnDefs": [
+                { "orderable": false, "targets": 4 }
+            ]
+        });
+    });
+    </script>
 
 <script>
     let ids = '';
@@ -27,8 +42,9 @@ function validateInput(input) {
     {
         ids = id;
     };
-    
-    
+    $(document).ready(function() {
+    $('.select1, .select2, .select3, .select4').select2({});
+    });
 
     document.addEventListener('DOMContentLoaded', function () {
         const canvas = document.getElementById('signature-pad');
@@ -85,7 +101,7 @@ function validateInput(input) {
             }
         });
         $.post(
-            `/sign/sign/${redmine}`,
+            `/sign/${redmine}`,
             {
                 group_head: ids,
                 impact: impacted ? impacted : null,

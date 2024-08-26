@@ -10,7 +10,13 @@
                     </a>
                 </div>
                 <div class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
+                    <a class="nav-item nav-link" href="{{ route('setting') }}">
+                        <i class="fas fa-cogs"></i> Setting
+                    </a>
+                    <a class="nav-item nav-link" href="{{ route('logout') }}">
+                        <i class="fas fa-sign-out"></i> Logout
+                    </a>
+                    {{-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user"></i>
                         </a>
@@ -19,7 +25,7 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                         </div>
-                    </li>
+                    </li> --}}
                 </div>
             </div>
         </nav>

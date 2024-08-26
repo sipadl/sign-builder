@@ -135,6 +135,83 @@ class MasterUserGroup extends Seeder
                 'email' => 'incident@tst.co.id',
                 'password' => Hash::make('Mti123!@#')
             ],
+            [
+                'id_group' => 0,
+                'name' => 'User 2',
+                'kode' => 'user2',
+                'email' => 'user2@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 0,
+                'name' => 'User 3',
+                'kode' => 'user3',
+                'email' => 'user3@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 0,
+                'name' => 'User 4',
+                'kode' => 'user4',
+                'email' => 'user4@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 0,
+                'name' => 'User 5',
+                'kode' => 'user5',
+                'email' => 'user5@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 4,
+                'name' => 'akunPM 1',
+                'kode' => 'akunPM1',
+                'email' => 'akunpm1@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 4,
+                'name' => 'akunPM 2',
+                'kode' => 'akunPM2',
+                'email' => 'akunpm2@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 3,
+                'name' => 'Derbrian S A Wibowo',
+                'kode' => 'debrian',
+                'email' => 'debriansigit@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 3,
+                'name' => 'Eddy Kusnanto',
+                'kode' => 'eddy',
+                'email' => 'eddykusnanto@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 3,
+                'name' => 'Dede',
+                'kode' => 'dede',
+                'email' => 'dede@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 3,
+                'name' => 'Nofri',
+                'kode' => 'nofri',
+                'email' => 'nofri@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
+            [
+                'id_group' => 3,
+                'name' => 'Oktavianus',
+                'kode' => 'okta',
+                'email' => 'oktavianus@tst.co.id',
+                'password' => Hash::make('Mti123!@#')
+            ],
         ];
 
         DB::table('users')->insert($data);
