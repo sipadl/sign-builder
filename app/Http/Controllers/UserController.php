@@ -208,6 +208,7 @@ class UserController extends Controller
     public function exportPdf($data)
     {
         // Data to be passed to the view
+        dd($data);
         $data = [
             'title' => 'Redmine No. ***',
             'heading' => 'Hello, World!',
