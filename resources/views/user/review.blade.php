@@ -3,10 +3,9 @@
 @section('title', $title ?? 'Formia' )
 @section('main')
 <div class="">
-    <div class="d-flex justify-content-between">
-        <div class="h2 mt-2 mb-1">Form Impact Analysis</div>
+    <div class="justify-content-between card mt-2">
+        <div class="h2 mb-1 card-header">Form Impact Analysis</div>
         @php
-
         $count_gh = DB::table('master_data_group_head')->count();
         $count_req = count(json_decode($data->request_by));
         // dd($count_gh + $count_req);
@@ -15,34 +14,30 @@
 
         $is_warning = DB::table('reason_exports')->where('redmine_no', $data->redmine_no)->get();
         @endphp
-        @if($hasil == $exists_sign)
-        <div class="align-self-center">
-            <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
 
-        </div>
-        @else
-        @if($is_warning)
-        <div class="align-self-center">
-            <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
-        </div>
-        <!--<button type="button" class="btn btn-sm btn-warning p-2 m-2" data-toggle="modal" data-target="#warningModal">-->
-        <!--    Export Pdf-->
-        <!--</button>-->
-        @endif
-        @endif
     </div>
     <div class="card" id="pdf">
-        {{-- <div class="d-flex justify-content-center"> --}}
-            <div class="row">
-                <div class="col-2">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo5uFqraSipfIfVuOte8zXh-gJTH1QzIeIIw&s" width="100" height="100" alt="logo mti">
+            <div class="row mt-4 m-1 p-0">
+                <div class="col-sm-6">
+                    <div class="h2">CHANGE IMPACT ANALYSIS</div>
                 </div>
-                <div class="col-9 align-self-center">
-                    <div class="h2 text-center">CHANGE IMPACT ANALYSIS</div>
+                @if($hasil == $exists_sign)
+                <div class="col-sm-6 d-flex align-self-end align-content-end justify-content-end">
+                    <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
+
                 </div>
+                @else
+                @if($is_warning)
+                <div class="col-sm-6 d-flex align-self-end align-content-end justify-content-end">
+                    <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
+                </div>
+                <!--<button type="button" class="btn btn-sm btn-warning p-2 m-2" data-toggle="modal" data-target="#warningModal">-->
+                <!--    Export Pdf-->
+                <!--</button>-->
+                @endif
+                @endif
             </div>
-            {{-- <div class="d-flex justify-content-center"> --}}
-            {{-- </div> --}}
+            <hr class="mx-2">
             <div class="row p-2">
                 <div class="col-md-4">
                     <div class="form-group row text-right">
@@ -468,7 +463,6 @@
                     </div>
             </div>
             {{-- @endauth --}}
-
             <div class="p-2">
                 <div class="p-2">
                     <div class="row d-flex text-center">
@@ -476,7 +470,7 @@
                             <div class="p mt-2">
                                 Changes Requestor
                             </div>
-                            <div class="d-flex justify-content-around">
+                            <div class="justify-content-around">
                                 @foreach(json_decode($data->request_by) as $key => $requestor)
                                 @php
                                     $sign = DB::table('signature')->where('kode', Str::lower(str_replace(' ','',$requestor)))
@@ -487,7 +481,7 @@
                                     @if($sign)
                                     <img src="{{$sign->signature}}" width="120" height="120" alt="">
                                     @else
-                                    @if(Auth::user()->group_id == 3);
+                                    @if(Auth::user()->id_group == 3 || 98 || 99)
                                     <div class="sign" style="min-height:4rem"></div>
                                     <a href="{{route('requestor.sign', [$data->redmine_no,$key, base64_encode($requestor)] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
                                         Sign
@@ -516,7 +510,7 @@
                             @endphp
                             <div class="btn-gh-{{$data->group_head}}">
                                 @if(!$signGH)
-                                    @if(Auth::user()->group_id == 3);
+                                    @if(Auth::user()->id_group == 3 || 99 || 98 )
                                     <div class="sign" style="min-height:4rem"></div>
                                     <a href="{{route('requestor.sign', [$data->redmine_no,'GH', base64_encode($data->group_head )] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
                                         Sign
