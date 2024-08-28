@@ -207,7 +207,7 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Requestor By</label>
                         <div class="col-md-10 requester">
-                            @if(Auth::user()->id_group != 99 || 98)
+                            @if(Auth::user()->id_group == 99 && Auth::user()->id_group == 98)
                             <input type="hidden" name="request_by[]" value="{{Auth::user()->id}}">
                             <input type="text" class="form-control" name="name_group" value={{Auth::user()->name}} @readonly(true)>
                             @else
@@ -233,7 +233,7 @@
                             <select  class="form-control mt-1 select3" required name="group_head">
                                 <option value=''>Pilih Group Head</option>
                                 @foreach($user as $us)
-                                    @if($us->id_group == 3)
+                                    @if($us->id_group == 3 || $us->id_group == 1)
                                 <option value="{{$us->id}}">{{$us->name}}</option>
                                     @endif
                                 @endforeach

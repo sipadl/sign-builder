@@ -349,7 +349,7 @@
                                 <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                 <div class="signature-user-{{$gh->id}}"></div>
                                 <!-- Button trigger modal -->
-                                @if($auth->kode == $gh->kode || $auth->kode == 'administrator')
+                                @if($auth->id == $gh->id || in_array($auth->id_group, [99, 98]))
                                 <div class="btn-sign-{{$gh->id}}">
                                     <button type="button" class="btn btn-primary btn-sm w-100" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
                                         Sign
@@ -421,7 +421,7 @@
                                 @if(isset($sign))
                                 <!-- Button trigger modal -->
                                 <div class="text-center">
-                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
+                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->id}}">
                                     <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                     <img src="{{$sign->signature}}" width="120" height="120" alt="">
                                 <div class="text-center">
@@ -481,7 +481,7 @@
                                     @if($sign)
                                     <img src="{{$sign->signature}}" width="120" height="120" alt="">
                                     @else
-                                    @if(Auth::user()->id_group == 3 || 98 || 99)
+                                    @if(in_array(Auth::user()->id_group, [98, 99]) || Auth::user()->id == $requestor)
                                     <div class="sign" style="min-height:4rem"></div>
                                     <a href="{{route('requestor.sign', [$data->redmine_no,$key, base64_encode($requestor)] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
                                         Sign
@@ -510,7 +510,7 @@
                             @endphp
                             <div class="btn-gh-{{$data->group_head}}">
                                 @if(!$signGH)
-                                    @if(Auth::user()->id_group == 3 || 99 || 98 )
+                                    @if(in_array(Auth::user()->id_group,[99, 98]) || Auth::user()->id == $data->group_head)
                                     <div class="sign" style="min-height:4rem"></div>
                                     <a href="{{route('requestor.sign', [$data->redmine_no,'GH', base64_encode($data->group_head )] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
                                         Sign

@@ -28,10 +28,13 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-circle" aria-hidden="true"></i>
-                            User
+                            {{Auth::user()->name}}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownId">
-                            <a class="dropdown-item" href="#">Action 1</a>
+                            <a class="dropdown-item" href="{{ route('profile') }}">
+                                <i class="fa fa-user-circle mx-2" aria-hidden="true"></i>
+                                Profile
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout')}}">
                                 <i class="fa fa-sign-out mx-2" aria-hidden="true"></i>
                                 Logout

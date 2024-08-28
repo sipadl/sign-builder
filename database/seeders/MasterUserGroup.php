@@ -179,13 +179,6 @@ class MasterUserGroup extends Seeder
             ],
             [
                 'id_group' => 3,
-                'name' => 'Derbrian S A Wibowo',
-                'kode' => 'debrian',
-                'email' => 'debriansigit@tst.co.id',
-                'password' => Hash::make('Mti123!@#')
-            ],
-            [
-                'id_group' => 3,
                 'name' => 'Eddy Kusnanto',
                 'kode' => 'eddy',
                 'email' => 'eddykusnanto@tst.co.id',

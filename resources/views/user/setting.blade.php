@@ -4,7 +4,7 @@
 <div class="row justify-content-center mt-2">
     <div class="col-md-12 col-sm-12 mx-0 p-0">
         <div class="card shadow-lg rounded">
-            <div class="card-header text-center bg-gradient-primary text-light">
+            <div class="card-header text-center bg-primary text-light">
                 <h2 class="font-weight-bold">Pengaturan</h2>
             </div>
             <div class="card-body p-4">

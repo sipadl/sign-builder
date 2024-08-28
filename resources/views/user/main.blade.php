@@ -77,7 +77,7 @@
             <div class="card">
             <div class="h2 card-header mx-0" id="title">{{ $title }}</div>
                 <!-- Nav tabs -->
-                <div class="row">
+                <div class="row mx-2 mt-4">
                     @if(session('msg'))
                     <div class="col-md-12" id="alert-baru">
                         <div class="alert alert-success d-flex justify-content-between align-items-center" id="alert_be">
@@ -145,7 +145,7 @@
                         foreach ($group_heads as $gh) {
                             $hasSign = false;
                             foreach ($signatures as $sign) {
-                                if ($sign->kode == $gh->kode) {
+                                if ($sign->group_head == $gh->id) {
                                     $hasSign = true;
                                     break;
                                 }
@@ -160,7 +160,7 @@
                             <div class="">
                                 <div class="btn-group dropright w-100">
                                     <a href="{{route('review',[$dd->id])}}" class="btn text-start btn-light w-100">
-                                        Redmine No. {{$dd->redmine_no.' | Case : '.$dd->title. ' |'}}
+                                        Redmine No. {{$dd->redmine_no.' | Case : '.$dd->title }}
                                     </a>
                                     <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
                                       <span class="sr-only">Toggle Dropright</span>

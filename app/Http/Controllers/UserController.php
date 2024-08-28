@@ -35,23 +35,15 @@ class UserController extends Controller
     {
         $title = 'List Impact Analysis - Menunggu Sign';
         $user = Auth::user();
-
-        // $data = [];
-        // if($user->kode == 'administrator') {
-        //     $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(20);
-        // } else {
-            // $data = DB::table('impact_analisis as ia')
-            // ->leftJoin('signature as s', 'ia.redmine_no','=','s.redmine_no')
-            // ->where('s.group_head','<>', $user->id)
-            // ->orderBy('ia.created_at', 'desc')
-            // ->paginate(20);
-           // Eksekusi query untuk mendapatkan redmine_no
-
-            $data = DB::table('impact_analisis as a')
-        ->join('signature as s', 's.redmine_no', '=', 'a.redmine_no')
-        ->where('s.group_head', '!=', 7)
-        ->select('a.*', 's.*')
-        ->paginate(20);
+           $data = ImpactAnalisis::select('impact_analisis.*')
+           ->selectSub(function ($query) use ($user) {
+               $query->from('signature')
+                     ->selectRaw('CASE WHEN COUNT(id) = 13 THEN "complete" ELSE "incomplete" END')
+                     ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
+                     ->where('signature.kode',  $user->id);
+           }, 'status_signature')
+           ->having('status_signature', '=', 'incomplete')
+           ->paginate(20);
 
         // }
 
@@ -67,11 +59,14 @@ class UserController extends Controller
         // if($user->kode == 'administrator') {
         //     $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(20);
         // } else {
-            $data = DB::table('impact_analisis as ia')
-            ->leftJoin('signature as s', 'ia.redmine_no', '=', 's.redmine_no')
-            ->where('s.group_head', $user->id)
-            ->orderBy('ia.created_at', 'desc')
-            ->paginate(20);
+            $data = ImpactAnalisis::select('impact_analisis.*')
+           ->selectSub(function ($query) use ($user) {
+               $query->from('signature')
+                     ->selectRaw('CASE WHEN COUNT(id) = 13 THEN "complete" ELSE "incomplete" END')
+                     ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
+                     ->where('signature.kode',  $user->id);
+           }, 'status_signature')
+           ->paginate(20);
         // }
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
         return view('user.main', compact('data','title','logging'));
@@ -81,22 +76,16 @@ class UserController extends Controller
         $user = Auth::user();
 
         $title = 'List Impact Analysis - Completed Sign';
-        $subQuery = DB::table('impact_analisis as ia')
-            ->leftJoin('signature as s', 's.redmine_no', '=', 'ia.redmine_no')
-            ->leftJoin('users as u', 'u.kode', '=', 's.kode')
-            ->select('ia.redmine_no', DB::raw('count(u.name) as total_sign'))
-            ->where('u.id_group', '!=', 99)
-            ->groupBy('ia.redmine_no');
+        $data = ImpactAnalisis::select('impact_analisis.*')
+        ->selectSub(function ($query) use ($user) {
+            $query->from('signature')
+                  ->selectRaw('CASE WHEN COUNT(id) = 13 THEN "complete" ELSE "incomplete" END')
+                  ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
+                  ->where('signature.kode',  $user->id);
+        }, 'status_signature')
+        ->having('status_signature', '=', 'complete')
+        ->paginate(20);
 
-        $mainQuery = DB::table(DB::raw("({$subQuery->toSql()}) as a"))
-            ->mergeBindings($subQuery)
-            ->join('impact_analisis as ai', 'ai.redmine_no', '=', 'a.redmine_no')
-            ->select('ai.*', 'a.total_sign')
-            ->where('a.total_sign', 13)
-            ->orderBy('ai.created_at', 'desc');
-
-        // Pagination
-        $data = $mainQuery->paginate(20);
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
 
         return view('user.main', compact('data','title','logging'));
@@ -263,6 +252,11 @@ class UserController extends Controller
         return redirect()->route('manage.user')->with('msg', 'Pengguna berhasil diubah');
     }
 
+    public function profile()
+    {
+        $user = User::find(Auth::user()->id);
+        return view('user.setting.profile', compact('user'));
+    }
     public function logout()
     {
         Auth::logout();
