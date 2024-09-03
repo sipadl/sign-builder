@@ -206,12 +206,11 @@
                 <div class="col-md-12 col-xs-12 mt-2">
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Requestor By</label>
-                        <div class="col-md-10 requester">
-                            @if(Auth::user()->id_group == 99 && Auth::user()->id_group == 98)
-                            <input type="hidden" name="request_by[]" value="{{Auth::user()->id}}">
+                            @if(!in_array(Auth::user()->id_group, ['98',99]))
+                            <input type="hidden" name="request_by" value="{{Auth::user()->id}}">
                             <input type="text" class="form-control" name="name_group" value={{Auth::user()->name}} @readonly(true)>
                             @else
-                            <select class="form-control mt-1 select2" required name="request_by[]">
+                            <select class="form-control mt-1 select2" required name="request_by">
                                 <option value=''>Pilih Requestor</option>
                                 @foreach($user as $us)
                                     @if($us->id_group == 0)
@@ -230,14 +229,22 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Group Head</label>
                         <div class="col-md-10">
+                            @if(!in_array(Auth::user()->id_group, ['98',99]))
+                            @php
+                                $gh = DB::table('users')->where('id', Auth::user()->parent_group)->first();
+                            @endphp
+                            <input type="hidden" name="group_head" value="{{$gh->id}}">
+                            <input type="text" class="form-control" name="group_head_name" value={{$gh->name ?? ''}} @readonly(true)>
+                            @else
                             <select  class="form-control mt-1 select3" required name="group_head">
                                 <option value=''>Pilih Group Head</option>
                                 @foreach($user as $us)
-                                    @if($us->id_group == 3 || $us->id_group == 1)
-                                <option value="{{$us->id}}">{{$us->name}}</option>
+                                    @if(in_array($us->id_group, [3,1]))
+                                    <option value="{{$us->id}}">{{$us->name}}</option>
                                     @endif
                                 @endforeach
                             </select>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -245,14 +252,19 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Project Manager</label>
                         <div class="col-md-10">
+                            @if(Auth::user()->id_group == 4)
+                            <input type="hidden" name="group_head" value="{{Auth::user()->id}}">
+                            <input type="text" class="form-control" name="project_manager" value={{Auth::user()->name ?? ''}} @readonly(true)>
+                            @else
                             <select id="yes" class="form-control mt-1 select4" required name="project_manager">
                                 <option value=''>Pilih Project Manager</option>
                                 @foreach($user as $us)
                                     @if($us->id_group == 4)
-                                <option value="{{$us->id}}">{{$us->name}}</option>
+                                    <option value="{{$us->id}}">{{$us->name}}</option>
                                     @endif
                                 @endforeach
                             </select>
+                            @endif
                         </div>
                     </div>
                 </div>

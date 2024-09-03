@@ -26,7 +26,14 @@ class UserController extends Controller
     public function index()
     {
         $title = 'List Impact Analysis';
-        $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        $user = Auth::user();
+        if(in_array($user->id_group, ['99', 98, 1,2])) {
+            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        }else if (in_array($user->id_group, [0])){
+            $data = ImpactAnalisis::where('group_head', $user->parent_group)->where('request_by', $user->id)
+            ->orderBy('created_at', 'desc')->paginate(10);
+            // dd($data);
+        }
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
         return view('user.main', compact('data','title','logging'));
     }
@@ -35,17 +42,22 @@ class UserController extends Controller
     {
         $title = 'List Impact Analysis - Menunggu Sign';
         $user = Auth::user();
-           $data = ImpactAnalisis::select('impact_analisis.*')
-           ->selectSub(function ($query) use ($user) {
-               $query->from('signature')
-                     ->selectRaw('CASE WHEN COUNT(id) = 13 THEN "complete" ELSE "incomplete" END')
-                     ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
-                     ->where('signature.kode',  $user->id);
-           }, 'status_signature')
-           ->having('status_signature', '=', 'incomplete')
-           ->paginate(20);
-
-        // }
+        if(in_array($user->id_group, [99, 98, 1, 2])){
+            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        } else if(in_array($user->id_group, [0])) {
+            $data = ImpactAnalisis::select('impact_analisis.*')
+            ->selectSub(function ($query) use ($user) {
+                $query->from('signature')
+                ->selectRaw('CASE WHEN COUNT(id) = 16 THEN "complete" ELSE "incomplete" END')
+                ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
+                ->where('signature.kode',  $user->id)
+                ->where('impact_analisis.group_head', $user->parent_group);
+            }, 'status_signature')
+            ->having('status_signature', '=', 'incomplete')
+            ->paginate(20);
+        } else {
+            $data = [];
+        }
 
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
         return view('user.main', compact('data','title','logging'));
@@ -55,19 +67,22 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $title = 'List Impact Analysis - Sudah di Sign';
-        // $data = [];
-        // if($user->kode == 'administrator') {
-        //     $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(20);
-        // } else {
+        if(in_array($user->id_group, [98, 99, 1, 2])){
+            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        } else if(in_array($user->id_group, [0])){
             $data = ImpactAnalisis::select('impact_analisis.*')
            ->selectSub(function ($query) use ($user) {
                $query->from('signature')
-                     ->selectRaw('CASE WHEN COUNT(id) = 13 THEN "complete" ELSE "incomplete" END')
+                     ->selectRaw('CASE WHEN COUNT(id) = 16 THEN "complete" ELSE "incomplete" END')
                      ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
-                     ->where('signature.kode',  $user->id);
+                     ->where('signature.kode',  $user->id)
+                    ->where('impact_analisis.group_head', $user->parent_group);
            }, 'status_signature')
            ->paginate(20);
-        // }
+        } else {
+            $data = [];
+        }
+
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
         return view('user.main', compact('data','title','logging'));
     }
@@ -76,15 +91,22 @@ class UserController extends Controller
         $user = Auth::user();
 
         $title = 'List Impact Analysis - Completed Sign';
-        $data = ImpactAnalisis::select('impact_analisis.*')
-        ->selectSub(function ($query) use ($user) {
-            $query->from('signature')
-                  ->selectRaw('CASE WHEN COUNT(id) = 13 THEN "complete" ELSE "incomplete" END')
-                  ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
-                  ->where('signature.kode',  $user->id);
-        }, 'status_signature')
-        ->having('status_signature', '=', 'complete')
-        ->paginate(20);
+        if(in_array($user->id_group, [99,98, 1,2])){
+            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        } else if(in_array($user->id_group, [0])) {
+            $data = ImpactAnalisis::select('impact_analisis.*')
+            ->selectSub(function ($query) use ($user) {
+                $query->from('signature')
+                ->selectRaw('CASE WHEN COUNT(id) = 16 THEN "complete" ELSE "incomplete" END')
+                ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
+                ->where('signature.kode',  $user->id)
+                ->where('impact_analisis.group_head', $user->parent_group);
+            }, 'status_signature')
+            ->having('status_signature', '=', 'complete')
+            ->paginate(20);
+        } else {
+            $data = [];
+        }
 
         $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
 
@@ -196,19 +218,24 @@ class UserController extends Controller
 
     public function exportPdf($data)
     {
+        // Find the record and convert it to a string
+        $data = ImpactAnalisis::find($data)->first();
+        $dataAsString = (string)$data; // Cast the data to a string
+
         // Data to be passed to the view
-        dd($data);
         $data = [
             'title' => 'Redmine No. ***',
             'heading' => 'Hello, World!',
-            'data' => $data
+            'data' => $dataAsString
         ];
 
         // Load the view and pass the data
         $pdf = Pdf::loadView('export.pdf', $data);
 
-        return $pdf;
+        // Download the PDF with the specified filename
+        return $pdf->download('p.pdf');
     }
+
 
     public function showChangePasswordForm()
     {
@@ -217,7 +244,8 @@ class UserController extends Controller
 
     public function createUser()
     {
-        return view('user.setting.create');
+        $group = User::whereIn('id_group', [1,2,3,4,98])->get();
+        return view('user.setting.create', compact('group'));
     }
 
     public function postCreateUser(Request $request)
@@ -236,7 +264,9 @@ class UserController extends Controller
     public function updateUser($id)
     {
         $user = User::find($id);
-        return view('user.setting.update', compact('user'));
+        $group = User::whereIn('id_group', [1,2,3,4,98])->get();
+
+        return view('user.setting.update', compact('user', 'group'));
     }
 
     public function deleteUser($id)

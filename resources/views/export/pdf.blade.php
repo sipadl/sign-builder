@@ -3,49 +3,31 @@
 <head>
     <title>{{ $title ?? 'judul' }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .content {
-            text-align: justify;
-        }
-        table {
-            border: solid 1px black;
-        }
-    </style>
 </head>
 <body>
-    <div class="content container">
+    <div class="content container p-5">
         <p>{{ $content ?? ''}}</p>
         @php
             $data = DB::table('impact_analisis')->find(1);
             $master_data_gh = DB::table('master_data_group_head')->get();
         @endphp
-        <div class="card" id="pdf">
-            {{-- <div class="d-flex justify-content-center"> --}}
+        <div class="" id="pdf">
                 <div class="row">
                     <div class="col-2">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo5uFqraSipfIfVuOte8zXh-gJTH1QzIeIIw&s" width="100" height="100" alt="logo mti">
+                        <img src="{{ url('logo_yokke_2.png') }}" width="100" height="100" alt="logo mti">
                     </div>
                     <div class="col-9 align-self-center">
                         <div class="h2 text-center">CHANGE IMPACT ANALYSIS</div>
                     </div>
                 </div>
-                {{-- <div class="d-flex justify-content-center"> --}}
-                {{-- </div> --}}
+                <hr>
                 <div class="row p-2">
-                    <div class="col-md-4">
-                        <div class="form-group row text-right">
-                            <label for="" class="col-form-label col-md-6 col-xs-12">
+                    <div class="col-4">
+                        <div class="form-group row text-left">
+                            <label for="" class="col-form-label col-6">
                                 Redmine No.
                             </label>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-6">
                                 <input
                                     type="text"
                                     name="redmine_no"
@@ -58,12 +40,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-8">
                         <div class="form-group row text-right">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">
+                            <label for="" class="col-form-label col-4">
                                 Title
                             </label>
-                            <div class="col-md-10 col-xs-12">
+                            <div class="col-8">
                                 <input
                                     type="text"
                                     name="title"
@@ -76,13 +58,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Changes Area</label>
-                            <div class="col-md-10 col-xs-12">
+                            <label for="" class="col-form-label col-4">Changes Area</label>
+                            <div class="col-8">
                                 <ul>
                                     @php
-                                    // dd(json_decode($data->changes_area));
                                         $changes = DB::table('master_data_changes')->whereIn('id', json_decode($data->changes_area))->get();
                                     @endphp
                                     @foreach ($changes as $item)
@@ -92,12 +73,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Define Scope</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Define Scope</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
-                                    <label for="message" class="mx-2">Existing Flow :</label>
+                                    <label for="message" class="mx-2">Current Flow :</label>
                                     <textarea
                                         name="scope_existing"
                                         value=""
@@ -119,15 +100,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Testing Requirement</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Testing Requirement</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
                                         name="testing_requirement"
-                                        value=
                                         readonly
                                         class="form-control border-0"
                                         id="message"
@@ -136,10 +116,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">UAT ENV. Data Needs</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">UAT ENV. Data Needs</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
@@ -152,10 +132,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Data Testing</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Data Testing</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
@@ -168,10 +148,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Setup Parameter</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Setup Parameter</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
@@ -184,10 +164,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Changes Of Existing Structure File</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Changes Of Existing Structure File</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
@@ -200,10 +180,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Changes Of Database</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Changes Of Database</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
@@ -216,10 +196,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Recomended Action and Testing</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Recomended Action and Testing</label>
+                            <div class="col-8">
                                 <div class="card mt-1 mb-1">
                                     <label for="message" class="mx-2">Please Note :</label>
                                     <textarea
@@ -232,10 +212,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="col-12 mt-2">
                         <div class="form-group row">
-                            <label for="" class="col-form-label col-md-2 col-xs-12">Downtime Required</label>
-                            <div class="col-md-10">
+                            <label for="" class="col-form-label col-4">Downtime Required</label>
+                            <div class="col-8">
                                 <input type="radio" id="yes" name="down_time" disabled value="Yes" readonly {{ $data->down_time == 'Yes' ? 'checked' : '' }}>
                                 <label for="yes" class="col-form-label">Yes</label>
                                 <input type="radio" name="down_time" id="no" value="No" disabled readonly {{ $data->down_time == 'No' ? 'checked' : '' }}>
@@ -244,20 +224,17 @@
                         </div>
                     </div>
                 </div>
-                {{-- Table Signature --}}
-                {{-- @auth --}}
-
+                <hr>
                 <div class="p-2">
-                    {{-- <form id="form-sign" method="POST" enctype="multipart/form-data"> --}}
                         <div class="row p-2">
-                            <div class="col-md-4 col-xs-12 text-center border">
-                                <h5 class="py-2">Group / Departement</h5>
+                            <div class="col-4 text-center border">
+                                <h6 class="py-2">Group / Departement</h6>
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center border">
-                                <h5 class="py-2">Reviewer Notes</h5>
+                            <div class="col-4 text-center border">
+                                <h6 class="py-2">Reviewer Notes</h6>
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center border">
-                                <h5 class="py-2">Signature</h5>
+                            <div class="col-4 text-center border">
+                                <h6 class="py-2">Signature</h6>
                             </div>
                             @foreach($master_data_gh as $gh )
                             @php
@@ -268,13 +245,13 @@
                                 $sign = DB::table('signature')->where('redmine_no', $data->redmine_no)->where('group_head', $gh->id)->first();
                             @endphp
                             @if($gh->tipe == 1)
-                            <div class="col-md-4 col-xs-12 text-left border">
-                                {{$gh->divisi}}
+                            <div class="col-4 text-left border">
+                                <h6>{{$gh->divisi}}
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center border">
+                            <div class="col-4 text-center border">
                                 <div class="form-group row">
                                     @if(isset($sign))
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <div class="text-center">
                                             <input type="radio" id="yes" name="impacted-{{$gh->id}}" disabled value="Yes" readonly {{ $sign->impact == 'Yes' ? 'checked' : '' }}>
                                             <label for="impacted" class="col-form-label">Yes</label>
@@ -287,7 +264,7 @@
                                         </div>
                                     </div>
                                     @else
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <div class="text-center">
                                             <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
                                             <label for="impacted-{{$gh->id}}-yes" class="col-form-label">Yes</label>
@@ -302,21 +279,13 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center border align-content-end">
+                            <div class="col-4 text-center border align-content-end">
                                 <div class="">
                                     @if(isset($sign))
-                                    <!-- Button trigger modal -->
                                     <div class="text-center">
                                         <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
                                         <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                         <img src="{{$sign->signature}}" width="120" height="120" alt="">
-                                        {{-- <div class="signature-user-{{$gh->id}}"></div> --}}
-                                        <!-- Button trigger modal -->
-                                        {{-- <div class="btn-sign-{{$gh->id}}">
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
-                                                Sign
-                                            </button>
-                                        </div> --}}
                                     <div class="text-center">
                                         {{$gh->name}}
                                     </div>
@@ -325,47 +294,21 @@
                                         <span>Date : {{$sign->created_at}}</span>
                                     </div>
                                 </div>
-                                @else
-                                @php
-                                    $auth = Auth::user();
-                                @endphp
-                                 <!-- Button trigger modal -->
-                                 <div class="text-center">
-                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
-                                    <input type="hidden" name="sign" id="sign-{{$gh->id}}">
-                                    <div class="signature-user-{{$gh->id}}"></div>
-                                    <!-- Button trigger modal -->
-                                    @if($auth->kode == $gh->kode || $auth->kode == 'administrator')
-                                    <div class="btn-sign-{{$gh->id}}">
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
-                                            Sign
-                                        </button>
-                                    </div>
-                                    @endif
-                                </button>
-                                <div class="text-center">
-                                    {{$gh->name}}
-                                </div>
-                                <div class="text-start">
-                                    <hr class="m-0 p-0">
-                                    <span>Date :</span>
-                                </div>
-                            </div>
                                 @endif
                             </div>
                             </div>
                             @elseif($gh->tipe == 2 )
-                            <div class="col-md-4 col-xs-12 text-left border">
+                            <div class="col-4 text-left border">
                                 {{$gh->divisi}}
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center border">
+                            <div class="col-4 text-center border">
                                 <div class="form-group row">
                                     @if(isset($sign))
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <div class="text-center">
-                                            <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
+                                            <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes" {{ $sign->impact == 'Yes' ? 'checked' : '' }}>
                                             <label for="impacted-{{$gh->id}}-yes" class="col-form-label">Yes</label>
-                                            <input type="radio" id="impacted-{{$gh->id}}-no" name="impacted-{{$gh->id}}" value="No">
+                                            <input type="radio" id="impacted-{{$gh->id}}-no" name="impacted-{{$gh->id}}" value="No" {{ $sign->impact == 'No' ? 'checked' : '' }}>
                                             <label for="impacted-{{$gh->id}}-no" class="col-form-label">No</label>
                                         </div>
                                         <div class="card text-start my-2">
@@ -374,11 +317,11 @@
                                         </div>
                                     </div>
                                     @else
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <div class="text-center">
-                                            <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes">
+                                            <input type="radio" id="impacted-{{$gh->id}}-yes" name="impacted-{{$gh->id}}" value="Yes" >
                                             <label for="impacted-{{$gh->id}}-yes" class="col-form-label">Yes</label>
-                                            <input type="radio" id="impacted-{{$gh->id}}-no" name="impacted-{{$gh->id}}" value="No">
+                                            <input type="radio" id="impacted-{{$gh->id}}-no" name="impacted-{{$gh->id}}" value="No" checked >
                                             <label for="impacted-{{$gh->id}}-no" class="col-form-label">No</label>
                                         </div>
                                         <div class="card text-start my-2">
@@ -389,52 +332,21 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center border align-content-end">
+                            <div class="col-4 text-center border align-content-end">
                                 <div class="">
                                     @if(isset($sign))
-                                    <!-- Button trigger modal -->
                                     <div class="text-center">
                                         <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
                                         <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                         <img src="{{$sign->signature}}" width="120" height="120" alt="">
-                                        {{-- <div class="signature-user-{{$gh->id}}"></div> --}}
-                                        <!-- Button trigger modal -->
-                                        {{-- <div class="btn-sign-{{$gh->id}}">
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
-                                                Sign
-                                            </button>
-                                        </div> --}}
                                     <div class="text-center">
                                         {{$gh->name}}
                                     </div>
-                                    <div class="text-start">
+                                    <div class="text-left">
                                         <hr class="m-0 p-0">
                                         <span>Date : {{$sign->created_at}}</span>
                                     </div>
                                 </div>
-                                @else
-                                 <!-- Button trigger modal -->
-                                 <div class="text-center">
-                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
-                                    <input type="hidden" name="sign" id="sign-{{$gh->id}}">
-                                    <div class="signature-user-{{$gh->id}}"></div>
-                                    <!-- Button trigger modal -->
-                                    @if($auth->kode == $gh->kode || $auth->kode == 'administrator')
-                                    <div class="btn-sign-{{$gh->id}}">
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
-                                            Sign
-                                        </button>
-                                    </div>
-                                    @endif
-                                </button>
-                                <div class="text-center">
-                                    {{$gh->name}}
-                                </div>
-                                <div class="text-start">
-                                    <hr class="m-0 p-0">
-                                    <span>Date :</span>
-                                </div>
-                            </div>
                                 @endif
                             </div>
                             </div>
@@ -442,12 +354,10 @@
                             @endforeach
                         </div>
                 </div>
-                {{-- @endauth --}}
-
                 <div class="p-2">
                     <div class="p-2">
                         <div class="row d-flex text-center">
-                            <div class="col-md-6 col-xs-6 border p-2">
+                            <div class="col-6 border p-2">
                                 <div class="p mt-2">
                                     Changes Requestor
                                 </div>
@@ -461,25 +371,18 @@
                                         @if($sign)
                                         <img src="{{$sign->signature}}" width="120" height="120" alt="">
                                         @else
-                                        @if(Auth::user()->group_id == 3);
-                                        <div class="sign" style="min-height:4rem"></div>
-                                        <a href="{{route('requestor.sign', [$data->redmine_no,$key, base64_encode($requestor)] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
-                                            Sign
-                                        </a>
-                                        @else
                                         <div class="sign" style="min-height:7rem"></div>
-                                        @endif
                                         @endif
                                         <p>{{ $requestor }}</p>
                                     </div>
                                     @endforeach
                                 </div>
                                 <hr class="m-0 p-0">
-                                <div class="text-left">
+                                <div class="text-center">
                                     <span>Date: {{$data->created_at}}</span>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-6 border p-2">
+                            <div class="col-6 border p-2">
                                 <div class="p mt-2">
                                     Change Approval
                                 </div>
@@ -503,7 +406,7 @@
                                     <p>{{$data->group_head}}</p>
                                 </div>
                                 <hr class="m-0 p-0">
-                                <div class="text-left">
+                                <div class="text-center">
                                     <span>Date: {{ $signGH->created_at ?? ''}}</span>
                                 </div>
                             </div>
