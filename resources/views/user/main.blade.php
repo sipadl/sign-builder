@@ -167,9 +167,13 @@
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </button>
                                     <div class="dropdown-menu">
+                                            @if(count($map) > 0 )
                                             @foreach ($map as $mm)
                                             <a class="dropdown-item" href="javascript::vod(0)">{{ $mm->name }}</a>
                                             @endforeach
+                                            @else
+                                                <a class="dropdown-item" href="javascript::vod(0)">Tidak ada</a>
+                                            @endif
                                     </div>
                                   </div>
                             </div>
@@ -203,7 +207,7 @@
             <div class="text-end mb-2">
                 <a href="{{ route('add') }}" class="btn btn-primary">Tambahkan Baru</a>
             </div>
-            @endif
+            {{-- @endif --}}
                 <div class="card">
                     <div class="card-header">Last Activity</div>
                     <ul class="list-group">
