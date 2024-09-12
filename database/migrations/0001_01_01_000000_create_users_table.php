@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('id_group')->nullable();
+            $table->integer('group_head')->default(0);
             $table->string('kode')->default(0);
             $table->rememberToken();
             $table->timestamps();

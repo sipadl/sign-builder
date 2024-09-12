@@ -58,6 +58,20 @@
                 </div>
                 <div class="col-md-12 col-xs-12 mt-2">
                     <div class="form-group row">
+                        <label for="" class="col-form-label col-md-2 col-xs-12">Category</label>
+                        <div class="col-md-10 col-xs-12">
+                            <select name="category" class="form-control" placeholder="Pilih 1">
+                                @foreach($master_data_category as $cat)
+                                @if($cat->access == Auth::user()->id_group)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 mt-2">
+                    <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Define Scope</label>
                         <div class="col-md-10">
                             <div class="card mt-1 mb-1">
@@ -207,7 +221,7 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Requestor By</label>
                         <div class="col-md-10 requester">
-                            @if(Auth::user()->id_group == 99 && Auth::user()->id_group == 98)
+                            @if(!in_array(Auth::user()->id_group, [99, 98]))
                             <input type="hidden" name="request_by[]" value="{{Auth::user()->id}}">
                             <input type="text" class="form-control" name="name_group" value={{Auth::user()->name}} @readonly(true)>
                             @else
@@ -230,6 +244,7 @@
                     <div class="form-group row">
                         <label for="" class="col-form-label col-md-2 col-xs-12">Group Head</label>
                         <div class="col-md-10">
+                            @if(in_array(Auth::user()->id_group, [99, 98, 4]))
                             <select  class="form-control mt-1 select3" required name="group_head">
                                 <option value=''>Pilih Group Head</option>
                                 @foreach($user as $us)
@@ -238,6 +253,15 @@
                                     @endif
                                 @endforeach
                             </select>
+                            @else
+                            @php
+                                $gh_code = Auth::user()->group_head;
+                                $gh_data = DB::table('users')->where('id', $gh_code)->first();
+                                // dd($gh_data);
+                            @endphp
+                            <input type="hidden" name="group_head" value="{{$gh_code}}">
+                            <input type="text" name="group_head_name" id="" value="{{$gh_data->name}}" readonly class="form-control mt-1">
+                            @endif
                         </div>
                     </div>
                 </div>

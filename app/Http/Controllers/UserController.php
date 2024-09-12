@@ -9,6 +9,7 @@ use App\Models\ImpactAnalisis;
 use App\Models\ReviewResult;
 use App\Models\Signature;
 use App\Models\Logging;
+use App\Models\MasterCategory;
 use Barryvdh\DomPDF\Facade\Pdf; // Import the facade
 use App\Models\ReasonExport;
 use Auth;
@@ -95,9 +96,10 @@ class UserController extends Controller
         $title = 'Tambah Impact Analysis';
 
         $master_data_changes = MasterDataChanges::where('status', 1)->get();
+        $master_data_category = MasterCategory::where('status', 1)->get();
         $master_data_gh = MasterDataGroup::get();
         $user = User::get();
-        return view('user.add', compact('master_data_changes', 'master_data_gh','title','user'));
+        return view('user.add', compact('master_data_changes', 'master_data_gh','title','user','master_data_category'));
     }
 
     public function post(Request $request) {
@@ -217,7 +219,8 @@ class UserController extends Controller
 
     public function createUser()
     {
-        return view('user.setting.create');
+        $group_head = User::whereIn('id_group', ['3', '2','1'])->get();
+        return view('user.setting.create', compact('group_head'));
     }
 
     public function postCreateUser(Request $request)
@@ -236,7 +239,8 @@ class UserController extends Controller
     public function updateUser($id)
     {
         $user = User::find($id);
-        return view('user.setting.update', compact('user'));
+        $group_head = User::whereIn('id_group', ['3', '2','1'])->get();
+        return view('user.setting.update', compact('user','group_head'));
     }
 
     public function deleteUser($id)

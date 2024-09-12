@@ -199,7 +199,7 @@
 
         <div class="col-md-4 col-xs-12 mt-2">
             <div class="">
-            @if(Auth::user()->id_group == 99 && 98)
+            @if(in_array(Auth::user()->id_group, ['99','4','98']))
             <div class="text-end mb-2">
                 <a href="{{ route('add') }}" class="btn btn-primary">Tambahkan Baru</a>
             </div>

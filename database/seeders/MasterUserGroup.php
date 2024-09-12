@@ -207,6 +207,25 @@ class MasterUserGroup extends Seeder
             ],
         ];
 
+        $masterCategory = [
+            [
+                'name' => 'PTR',
+                'access' => 4,
+                'status' => 1
+            ],
+            [
+                'name' => 'Project',
+                'access' => 4,
+                'status' => 1
+            ],
+            [
+                'name' => 'Incident',
+                'access' => 98,
+                'status' => 1
+            ],
+        ];
+
+        DB::table('master_categories')->insert($masterCategory);
         DB::table('users')->insert($data);
 
     }
