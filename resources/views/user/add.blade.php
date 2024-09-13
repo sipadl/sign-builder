@@ -222,7 +222,7 @@
                         <label for="" class="col-form-label col-md-2 col-xs-12">Requestor By</label>
                         <div class="col-md-10 requester">
                             @if(!in_array(Auth::user()->id_group, [99, 98]))
-                            <input type="hidden" name="request_by[]" value="{{Auth::user()->id}}">
+                            <input type="hidden" name="request_by" value="{{Auth::user()->id}}">
                             <input type="text" class="form-control" name="name_group" value={{Auth::user()->name}} @readonly(true)>
                             @else
                             <select class="form-control mt-1 select2" required name="request_by">
@@ -257,7 +257,6 @@
                             @php
                                 $gh_code = Auth::user()->group_head;
                                 $gh_data = DB::table('users')->where('id', $gh_code)->first();
-                                // dd($gh_data);
                             @endphp
                             <input type="hidden" name="group_head" value="{{$gh_code}}">
                             <input type="text" name="group_head_name" id="" value="{{$gh_data->name}}" readonly class="form-control mt-1">
@@ -270,8 +269,8 @@
                         <label for="" class="col-form-label col-md-2 col-xs-12">Project Manager</label>
                         <div class="col-md-10">
                             @if(Auth::user()->id_group == 4)
-                            <input type="hidden" name="group_head" value="{{Auth::user()->id}}">
-                            <input type="text" class="form-control" name="project_manager" value={{Auth::user()->name ?? ''}} @readonly(true)>
+                            <input type="hidden" name="project_manager" value="{{Auth::user()->id}}">
+                            <input type="text" class="form-control" name="project_manager_name" value={{Auth::user()->name ?? ''}} @readonly(true)>
                             @else
                             <select id="yes" class="form-control mt-1 select4" required name="project_manager">
                                 <option value=''>Pilih Project Manager</option>

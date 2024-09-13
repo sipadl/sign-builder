@@ -31,20 +31,20 @@ class HomeController extends Controller
 
     public function shared_sign ($redmine, $index, $requestor) {
         $data = ImpactAnalisis::where('redmine_no', $redmine)->first();
-        $requestor = base64_decode($requestor);
-        $requestor = Str::lower(str_replace(' ', '', $requestor));
-        // $this->Logging(Auth::user(), 2, $id);
         return view('user.sign', compact('redmine', 'index','data', 'requestor'));
     }
 
     public function simpanSign(Request $request, $id)
-    {
-        // dd($request);
-
+    {   
+        // dd($id);
+        // dd($request->user);
         $group_head = ImpactAnalisis::where('redmine_no', $id)->first();
         $data = $request->except('_token');
+        $data['kode'] = base64_decode($request->kode);
         $data['redmine_no'] = $id;
         $data['group_head'] = $group_head->group_head;
+        // $this->Logging($request->user, 2, $id);
         $submit = Signature::create($data);
+        // dd($submit);
     }
 }

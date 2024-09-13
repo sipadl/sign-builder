@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/userCreates', [App\Http\Controllers\UserController::class ,'postCreateUser'])->name('buatUser');
     Route::get('/manage-user', [App\Http\Controllers\UserController::class, 'managementUser'])->name('manage.user');
     Route::get('/profile', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
-
+    Route::get('/divisi', [App\Http\Controllers\UserController::class, 'divisi'])->name('divisi');
     Route::delete('/deleteUser/{id}', [App\Http\Controllers\UserController::class ,'deleteUser'])->name('setting.user.delete');
 
     Route::get('/export-pdf/{id}', [App\Http\Controllers\UserController::class ,'exportPdf'])->name('exportPdf');

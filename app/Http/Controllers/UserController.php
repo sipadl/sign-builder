@@ -28,14 +28,14 @@ class UserController extends Controller
     {
         $title = 'List Impact Analysis';
         $user = Auth::user();
-        if(in_array($user->id_group, ['99', 98, 1,2])) {
+        if(in_array($user->id_group, [99, 98, 1,2,3,4])) {
             $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
         }else if (in_array($user->id_group, [0])){
             $data = ImpactAnalisis::where('group_head', $user->parent_group)->where('request_by', $user->id)
             ->orderBy('created_at', 'desc')->paginate(10);
             // dd($data);
         }
-        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
+        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->paginate(10);
         return view('user.main', compact('data','title','logging'));
     }
 
@@ -43,8 +43,25 @@ class UserController extends Controller
     {
         $title = 'List Impact Analysis - Menunggu Sign';
         $user = Auth::user();
-        if(in_array($user->id_group, [99, 98, 1, 2])){
-            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        if(in_array($user->id_group, [99, 98, 1, 2,3,4])){
+            // $data = ImpactAnalisis::join('signature', 'signature.redmine_no','=','impact_analisis.redmine_no')->where('kode','!=',$user->id)->orderBy('impact_analisis.created_at', 'desc')->paginate(10);
+            $data = ImpactAnalisis::select('impact_analisis.id', 'impact_analisis.redmine_no', 'impact_analisis.title','impact_analisis.created_at')
+                ->join('signature', 'impact_analisis.redmine_no', '=', 'signature.redmine_no')
+                ->whereNotIn('impact_analisis.redmine_no', function ($query) use ($user) {
+                    $query->select('redmine_no')
+                        ->from('signature')
+                        ->where('kode', $user->id);
+                })
+                ->whereNotExists(function ($query) {
+                    $query->select(DB::raw('COUNT(DISTINCT id)'))
+                        ->from('signature')
+                        ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
+                        ->havingRaw('COUNT(DISTINCT id) = 16');
+                })
+                ->orderBy('impact_analisis.created_at', 'desc')
+                ->groupBy('impact_analisis.id', 'impact_analisis.redmine_no', 'impact_analisis.title','impact_analisis.created_at')
+                ->paginate(10);
+        
         } else if(in_array($user->id_group, [0])) {
             $data = ImpactAnalisis::select('impact_analisis.*')
             ->selectSub(function ($query) use ($user) {
@@ -60,7 +77,7 @@ class UserController extends Controller
             $data = [];
         }
 
-        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
+        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->paginate(10);
         return view('user.main', compact('data','title','logging'));
     }
 
@@ -68,8 +85,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $title = 'List Impact Analysis - Sudah di Sign';
-        if(in_array($user->id_group, [98, 99, 1, 2])){
-            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
+        if(in_array($user->id_group, [98, 99, 1, 2, 3, 4])){
+            $data = ImpactAnalisis::join('signature', 'signature.redmine_no','=','impact_analisis.redmine_no')->where('kode',$user->id)->orderBy('impact_analisis.created_at', 'desc')->paginate(10);
         } else if(in_array($user->id_group, [0])){
             $data = ImpactAnalisis::select('impact_analisis.*')
            ->selectSub(function ($query) use ($user) {
@@ -84,32 +101,42 @@ class UserController extends Controller
             $data = [];
         }
 
-        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
+        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->paginate(10);
         return view('user.main', compact('data','title','logging'));
+    }
+
+
+    public function divisi(){
+        $user = Auth::user();
+        $title = 'List Impact Analysis - Completed Sign';
+        $data = $data = ImpactAnalisis::select('impact_analisis.id', 'impact_analisis.redmine_no', 'impact_analisis.title')
+        ->selectRaw('(SELECT COUNT(id) FROM signature s WHERE s.redmine_no = impact_analisis.redmine_no) as count')
+        ->selectRaw('CASE WHEN (SELECT COUNT(id) FROM signature s WHERE s.redmine_no = impact_analisis.redmine_no) = 16 THEN "complete" ELSE "incomplete" END as status')
+        ->where('impact_analisis.group_head', $user->id || $user->group_head)
+        ->orderBy('created_at','desc')
+        ->paginate(10);
+    
+        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->paginate(10);
+    
+        return view('user.main', compact('user','title','data','logging'));
     }
 
     public function complete() {
         $user = Auth::user();
 
         $title = 'List Impact Analysis - Completed Sign';
-        if(in_array($user->id_group, [99,98, 1,2])){
-            $data = ImpactAnalisis::orderBy('created_at', 'desc')->paginate(10);
-        } else if(in_array($user->id_group, [0])) {
             $data = ImpactAnalisis::select('impact_analisis.*')
             ->selectSub(function ($query) use ($user) {
                 $query->from('signature')
                 ->selectRaw('CASE WHEN COUNT(id) = 16 THEN "complete" ELSE "incomplete" END')
-                ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no')
-                ->where('signature.kode',  $user->id)
-                ->where('impact_analisis.group_head', $user->parent_group);
+                ->whereColumn('signature.redmine_no', 'impact_analisis.redmine_no');
+                // ->where('signature.kode',  $user->id)
+                // ->where('impact_analisis.group_head', $user->group_head);
             }, 'status_signature')
             ->having('status_signature', '=', 'complete')
-            ->paginate(20);
-        } else {
-            $data = [];
-        }
+            ->paginate(10);
 
-        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->get();
+        $logging = Logging::where('id_user', Auth::user()->id)->orderBy('created_at','desc')->limit(10)->paginate(10);
 
         return view('user.main', compact('data','title','logging'));
     }
@@ -132,7 +159,6 @@ class UserController extends Controller
             return redirect()->route('main')->with(['error' => 'No Redmine sudah digunakan']);
         };
         $data = $request->except('_token');
-        $data['request_by'] = json_encode($request['request_by']);
         $data['changes_area'] = json_encode($request['changes_area']);
         $this->Logging(Auth::user(), 4, $data['redmine_no']);
         $id = ImpactAnalisis::create($data);
@@ -247,7 +273,8 @@ class UserController extends Controller
     public function createUser()
     {
         $group = User::whereIn('id_group', [1,2,3,4,98])->get();
-        return view('user.setting.create', compact('group'));
+        $group_head = User::whereIn('id_group', [1,2,3,4,98])->get();
+        return view('user.setting.create', compact('group','group_head'));
     }
 
     public function postCreateUser(Request $request)
@@ -294,4 +321,5 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
+
 }

@@ -20,20 +20,20 @@
                 <div class="col-sm-6">
                     <div class="h2">CHANGE IMPACT ANALYSIS</div>
                 </div>
-                @if($hasil == $exists_sign)
+                {{-- @if($hasil == $exists_sign) --}}
                 <div class="col-sm-6 d-flex align-self-end align-content-end justify-content-end">
-                    {{-- <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button> --}}
-                    <a href="{{route('exportPdf', [$data->id])}}" class="btn btn-sm btn-dark" >Print</a>
+                    <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
+                    {{-- <a href="{{route('exportPdf', [$data->id])}}" class="btn btn-sm btn-dark" >Print</a> --}}
 
                 </div>
-                @else
-                @if($is_warning)
-                <div class="col-sm-6 d-flex align-self-end align-content-end justify-content-end">
+                {{-- @else --}}
+                {{-- @if($is_warning) --}}
+                {{-- <div class="col-sm-6 d-flex align-self-end align-content-end justify-content-end">
                     <a href="{{route('exportPdf', [$data->id])}}" class="btn btn-sm btn-dark" >Print</a>
-                    {{-- <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button> --}}
-                </div>
-                @endif
-                @endif
+                    <button class="btn btn-sm btn-warning p-2" onclick="saveToPDF('{{ $data->redmine_no }}')">Export to PDF</button>
+                </div> --}}
+                {{-- @endif --}}
+                {{-- @endif --}}
             </div>
             <hr class="mx-2">
             <div class="row p-2">
@@ -281,7 +281,7 @@
                                         <textarea name="notes" id="notes" rows="5" class="form-control border-0" disabled >{{$sign->notes ?? ''}}</textarea>
                                     </div>
                                 </div>
-                                @elseif(Auth::user()->id == $gh->id || Auth::user()->group_id == 99)
+                                @elseif(Auth::user()->id == $gh->id || Auth::user()->id_group == 99)
 
                                 <div class="col-md-12">
                                     <div class="text-center">
@@ -317,7 +317,7 @@
                                 @if(isset($sign))
                                 <!-- Button trigger modal -->
                                 <div class="text-center">
-                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
+                                    <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->id}}">
                                     <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                     <img src="{{$sign->signature}}" width="120" height="120" alt="">
                                     {{-- <div class="signature-user-{{$gh->id}}"></div> --}}
@@ -341,7 +341,7 @@
                             @endphp
                              <!-- Button trigger modal -->
                              <div class="text-center">
-                                <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->kode}}">
+                                <input type="hidden" name="kode" id="kode-{{$gh->id}}" value="{{$gh->id}}">
                                 <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                 <div class="signature-user-{{$gh->id}}"></div>
                                 <!-- Button trigger modal -->
@@ -435,14 +435,14 @@
                                 <input type="hidden" name="sign" id="sign-{{$gh->id}}">
                                 <div class="signature-user-{{$gh->id}}"></div>
                                 <!-- Button trigger modal -->
-                                @if($auth->kode == $gh->kode || $auth->kode == 'administrator')
+                               
+                                @if(Auth::user()->id == $gh->id || Auth::user()->id_group == 99)
                                 <div class="btn-sign-{{$gh->id}}">
                                     <button type="button" class="btn btn-primary btn-sm w-100" onclick="setValue({{$gh->id}})" data-toggle="modal" data-target="#signatureModal">
                                         Sign
                                     </button>
                                 </div>
                                 @endif
-                            </button>
                             <div class="text-center">
                                 {{$gh->name}}
                             </div>
@@ -479,7 +479,7 @@
                                     @else
                                     @if(in_array(Auth::user()->id_group, [98, 99]) || Auth::user()->id == $data->request_by)
                                     <div class="sign" style="min-height:4rem"></div>
-                                    <a href="{{route('requestor.sign', [$data->redmine_no,0, base64_encode($data->request_by)] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
+                                    <a href="{{route('requestor.sign', [$data->redmine_no, Auth::user()->id , base64_encode($data->request_by)] )}}" target="_blank" class="btn btn-primary btn-sm w-100">
                                         Sign
                                     </a>
                                     @else

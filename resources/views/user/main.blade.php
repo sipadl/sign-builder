@@ -101,6 +101,7 @@
                     @endif
                 </div>
                 <ul class="nav nav-tabs mt-3" id="navId">
+                    @if(in_array(Auth::user()->id_group,[99,98,0,1,2,3,4]))
                     <li class="nav-item">
                         <a href="{{ route('main') }}" class="nav-link {{ request()->routeIs('main') ? 'active' : '' }}">
                             List Impact Analysis
@@ -111,6 +112,9 @@
                             Waiting for Sign
                         </a>
                     </li>
+                    @endif
+                    @if(in_array(Auth::user()->id_group,[0,1,2,3,4]))
+                    
                     <li class="nav-item">
                         <a href="{{ route('signed') }}" class="nav-link {{ request()->routeIs('signed') ? 'active' : '' }}">
                             Sign in By You
@@ -121,6 +125,14 @@
                             Complete Sign
                         </a>
                     </li>
+                    @endif
+                    @if(in_array(Auth::user()->id_group, [1, 2]))
+                    <li class="nav-item">
+                        <a href="{{ route('divisi') }}" class="nav-link {{ request()->routeIs('divisi') ? 'active' : '' }}">
+                            Your Division
+                        </a>
+                    </li>
+                    @endif
                 </ul>
 
                 <div class="col-md-12 col-sm-12 my-3 p-2">
@@ -156,7 +168,6 @@
                         }
                         @endphp
                         <div class="accordion accordion-flush" id="impactAnalysisAccordion">
-                            @foreach($data as $index => $dd)
                             <div class="">
                                 <div class="btn-group dropright w-100">
                                     <a href="{{route('review',[$dd->id])}}" class="btn text-start btn-light w-100">
@@ -177,7 +188,6 @@
                                     </div>
                                   </div>
                             </div>
-                            @endforeach
                         </div>
                         @endforeach
                     </div>
@@ -207,7 +217,7 @@
             <div class="text-end mb-2">
                 <a href="{{ route('add') }}" class="btn btn-primary">Tambahkan Baru</a>
             </div>
-            {{-- @endif --}}
+            @endif
                 <div class="card">
                     <div class="card-header">Last Activity</div>
                     <ul class="list-group">

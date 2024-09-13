@@ -28,7 +28,7 @@
                 .signature-pad {
                     border: 1px solid #000;
                     border-radius: 5px;
-                    height: 200px;
+                    height: 20vh;
                 }
                 .signature-pad--body {
                     width: 100%;

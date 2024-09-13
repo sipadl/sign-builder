@@ -49,20 +49,6 @@
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="group">Group</label>
-                            <select name="id_group" class="form-control @error('parent_group') is-invalid @enderror" id="parent_group" required>
-                                <option value="">Pilih Group</option>
-                                @foreach($group as $gr)
-                                <option value="{{$gr->id}}">{{$gr->name}}</option>
-                                @endforeach
-                            </select>
-                            @error('parent_group')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-3">
                             <label for="role">Role</label>
                             <select name="id_group" class="form-control @error('id_group') is-invalid @enderror" id="id_group" required>
                                 <option value="">Pilih Role</option>

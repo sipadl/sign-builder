@@ -52,6 +52,7 @@
                         <div class="modal-body">
                             <input type="hidden" name="redmine" id="redmine" value="{{$redmine}}">
                             <input type="hidden" name="kode" id="kode" value="{{$requestor}}">
+                            <input type="hidden" name="user" id="user" value="{{$index}}">
                             <input type="hidden" name="sign" id="sign" value="">
                             <canvas class="signature-pad" id="signature-pad"></canvas>
                         </div>
@@ -104,7 +105,7 @@
                 setTimeout(() => {
                     // location.reload();
                     window.close()
-                }, 3000);
+                }, 1000);
             }
         });
 
@@ -113,6 +114,7 @@
         const sign = $(`#sign`).val()
         const redmine = $(`#redmine`).val()
         const kode = $(`#kode`).val()
+        const user = $(`#user`).val()
         jQuery.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -125,6 +127,7 @@
                 // impact: impacted,
                 // notes: notes,
                 kode: kode,
+                user: user,
                 signature: ttd,
             },
             function (data, textStatus, jqXHR) {
